@@ -52,8 +52,7 @@ app.controller('MainCtrl', function($scope, $filter, $ionicSlideBoxDelegate,
     } 
 
     $scope.inConfigPage = false;
-    $scope.title = $scope.locs[index].state + " " + 
-          $scope.locs[index].city + " " + $scope.locs[index].region;
+    $scope.title = $scope.locs[index].city + " " + $scope.locs[index].region;
   }
 
    $scope.goSlide = function(index) {
