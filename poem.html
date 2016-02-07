@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <style>
+    .text-overlay {
+    #background: none repeat scroll 0 0 #FFFFFF;
+    opacity: 0.9;
+    top:0;
+    left:20;
+    position: absolute;
+    }
+
+    .thumbnail{
+    position:relative;
+    
+   } 
+    </style>
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="lib/ngCordova/dist/ng-cordova.js"></script>
+    <script src="cordova.js"></script>
+
+
+    <!-- Firebase -->
+    <script src="lib/firebase/firebase.js"></script>
+
+    <!-- AngularFire -->
+    <script src="lib/angularfire/dist/angularfire.min.js"></script>
+
+    <script src="lib/ngstorage/ngStorage.min.js"></script>
+
+    <!-- Time ago -->
+    <script src="lib/angular-timeago/dist/angular-timeago.js"></script>
+
+    <script src="lib/angular-audio/app/angular.audio.js"></script>
+
+
+    <!-- your app's js -->
+    <script src="js/poem.js"></script>
+  </head>
+
+  <body ng-app="starter" ng-controller="PoemCtrl">
+<!-- 
+  <div class="bar bar-header">
+    <button class="button icon ion-navicon" ng-click="goConfig();"></button>
+    <h1 class="title">시와 날씨 입력</h1>
+    <button class="button icon ion-earth" ng-click="goMap();"></button>
+  </div>
+   <ion-content class="has-header">
+
+-->
+<ion-content>
+  <div class="list">
+
+ <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input ng-model="poem.msg" type="text" placeholder="(필수항목)날씨/공기와 어울리는 시">
+            </label>
+          </div>
+
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input ng-model="poem.author" type="text" placeholder="(필수항목) 작가">
+            </label>
+          </div>
+
+          <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input ng-model="poem.title" type="text" placeholder="시제목">
+            </label>
+          </div>
+
+           <div class="item item-input-inset">
+            <label class="item-input-wrapper">
+              <input ng-model="poem.booktitle" type="text" placeholder="출판사/책제목">
+            </label>
+          </div>
+
+           <div class="item item-input-inset">
+    <label class="item-input-wrapper icon ion-information-circled">
+       시와 관계있는 날씨항목만 지정하시면 됩니다.
+    </label>
+  </div>
+
+ <div class="item range range-positive">
+    온도 {{poem.temp}} &#x2103;
+    <input type="range" ng-model="poem.temp" name="volume" min="-20" max="35">
+  </div>
+
+
+<div class="item item-input item-select">
+  <div class="row">
+  
+    <div class="col col-50">
+       <label class="item item-input item-select ion-ios-partlysunny">
+          하늘 <select ng-options="i.id as i.label for i in skyStatus" 
+              ng-model="poem.sky"></select>
+       </label>
+    </div>
+  
+    <div class="col col-50">
+      <label class="item item-input item-select ion-leaf">
+        바람 
+        <select ng-model="poem.wind" ng-options="i.id as i.label for i in windStatus">
+        </select>
+      </label>
+    </div>
+  
+  </div>
+</div>
+
+
+
+ 
+<div class="item item-input">
+  <div class="row">
+    <div class="col col-50">
+      <label class="item item-input item-select ion-umbrella">
+        비
+        <select ng-model="poem.rain" ng-options="i.id as i.label for i in rainStatus">
+        </select>
+      </label>
+    </div>
+    <div class="col col-50">
+      <label class="item item-input item-select ion-ios-snowy">
+        눈
+        <select ng-model="poem.snow" ng-options="i.id as i.label for i in snowStatus">
+        </select>
+      </label>
+    </div>
+  </div>
+</div>           
+          
+
+           <div class="item item-input-inset">
+           <button ng-click="addPoem();" class="button button-block button-positive">
+            시를 저장합니다          </button>
+          </div>
+
+        <ion-list>
+          <ion-item ng-repeat="poem in poemList">
+            <img ng-show="poem.sky" ng-src="img/s{{poem.sky}}.png" height="24"> 
+            {{poem.msg}}
+            <span class="item-note">{{poem.author}} {{-poem.timestamp | timeAgo}}</span>
+          </ion-item>
+        </ion-list>
+
+</ion-content>
+
+  </body>
+</html>

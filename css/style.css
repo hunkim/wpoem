@@ -1,0 +1,53 @@
+/* Empty. Add your own CSS if you like */
+.angular-google-map-container { 
+  height: 100%; 
+}
+
+.marker-labels {
+  width: 160px;
+  padding: 10px;  
+  background: #fff;
+  border-radius: 5px;
+}
+
+.text-overlay-left {
+  position: absolute;
+  left: 5%;
+  top: 10%;
+}
+
+.speaker-overlay {
+  position: absolute;
+  left: 5%;
+  top: 5%;
+}
+
+.date-info-overlay {
+  position: absolute;
+  left: 3%;
+  top: 5%;
+}
+.text-overlay-right {
+  position: absolute;
+  left: 55%;
+  top: 10%;
+}
+
+/* https://forum.ionicframework.com/t/ionic-list-item-with-ng-click-and-option-buttons/5078/7 */
+.list-left-editing .item{
+pointer-events: initial;
+}
+
+/*
+.list-right-editing .item{
+pointer-events: initial;
+}
+*/
+
+.glabel {
+    color: #4A89DC;
+ 	font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    white-space: nowrap;
+}

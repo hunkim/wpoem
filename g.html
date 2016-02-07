@@ -1,0 +1,80 @@
+<style>
+
+.slider { height: 100%; text-align: center }
+.scroll { height: 100% }
+
+</style>
+  
+  <div class="bar bar-header">
+    <a class="button icon ion-thermometer" ng-click="loading('날씨정보를 읽고있습니다.');" ng-href="#/">날씨보기</a>
+    <h1 class="title">날씨 공기 지도</h1>
+  </div>
+
+<ion-content class="has-header">
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.markersEvents">
+
+<!--
+          <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id" closeClick="hideMarkerPopup()" onClicked="showMarkerPopup()">
+          </ui-gmap-marker>   
+-->
+ <!--  https://github.com/angular-ui/angular-google-maps/blob/master/example/example.html -->
+  <!-- predefined markers -->
+        <!-- rendering via ng-repeat, HIGH OVERHEAD via DOM Manipulation -->
+        <!--
+        <ui-gmap-marker ng-repeat="m in map.markers" coords="m" icon="m.icon" click="onMarkerClicked(m)" idKey="m.id" options="m.options">
+            <ui-gmap-window ng-cloak  coords="m.coords" isIconVisibleOnClick="false" options="map.infoWindowWithCustomClass.options">
+                    <p>This is an info window at {{ m.latitude | number:4 }}, {{ m.longitude | number:4 }}!</p>
+                    <p class="muted">My marker will stay open when the window is popped up!</p>
+            </ui-gmap-window>
+        </ui-gmap-marker>
+      -->
+           <ui-gmap-marker ng-repeat="m in alldata" 
+              models="m" idkey="m.id" coords="m.coords" icon="m.icon" options="m.options">
+              <!-- labelClass:'marker_labels',labelAnchor:'12 60',labelContent:'title' -->
+               <ui-gmap-window ng-cloak show="m.showWindow" closeClick="m.closeClick">
+                <div>
+                  <div class="text-center">
+                    <h5>{{m.loc.city}} 
+                      {{m.loc.region}}
+                    </H5>
+                    <h4>{{m.weather.T1H}}&#x2103;
+                    <small>습도: {{m.weather.REH}}%</small></h4> 
+                    <H4>공기 {{m.air.khaiValue|khai}} ({{m.air.khaiValue}})</H4>
+                    <p>미세먼지 {{m.air.pm10Value|pm10}}({{m.air.pm10Value}})<p>
+                    <p ng-show="m.air.pm25Grade">
+                    초미세먼지 {{m.air.pm25Value|pm25}} ({{m.air.pm25Value}})</p>
+
+                    <button ng-hide="m.added" ng-click="$parent.addMapLoc($parent.m);m.added=true;" class="button button-positive icon-left ion-android-add-circle">
+                    지역추가
+                    </button>
+
+                    <button ng-show="m.added"  class="button button-positive icon-left ion-checkmark-round" disabled>
+                    추가 되었습니다.
+                    </button>
+                
+                  </div>
+                </div>
+              </ui-gmap-window>
+          </ui-gmap-marker>   
+         
+     
+        </ui-gmap-google-map>
+</ion-content>
+<!--
+    <ion-view view-title="Google Maps V3 example 2">  
+    
+      <ion-content data-tap-disabled="true">
+    
+        <ui-gmap-google-map center='map.center' zoom='map.zoom' events="map.markersEvents">
+          <ui-gmap-marker coords="marker.coords" options="marker.options" events="marker.events" idkey="marker.id" closeClick="hideMarkerPopup()" onClicked="showMarkerPopup()">
+          </ui-gmap-marker>   
+
+          <ui-gmap-marker coords="marker2.coords" options="marker.options" events="marker.events" idkey="marker2.id" closeClick="hideMarkerPopup()" onClicked="showMarkerPopup()">
+          </ui-gmap-marker>   
+     
+        </ui-gmap-google-map>
+        
+      </ion-content>
+      
+    </ion-view>
+-->
