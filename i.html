@@ -132,11 +132,11 @@
           </form> 
         
           <ion-item ng-repeat="talk in loc_meta[$index].talks">
-           
+           <div class="text-left">
             <img ng-src="img/av{{-talk.timestamp%12}}.png" height="24">
             {{talk.msg}}
             <span class="item-note">{{-talk.timestamp | timeAgo}}</span>
-    
+          </div>
           </ion-item>
         </ion-list>
 

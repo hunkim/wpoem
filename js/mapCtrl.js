@@ -27,8 +27,9 @@ app.controller('MapCtrl', function($scope, $filter,
     console.log("Adding ..." + mapLoc);
     
     // no state? Let's make it empty
-    if (mapLoc.loc.state==undefiled) {
-      mapLoc.loc.state="";
+    if (mapLoc.loc.state==undefined || mapLoc.loc.state=="") {
+      mapLoc.loc.state=mapLoc.loc.city;
+      mapLoc.loc.city ="";
     }
 
     var loc = {state:mapLoc.loc.state, 

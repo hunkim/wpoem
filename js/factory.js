@@ -158,12 +158,13 @@ var loadAllForLOC = function(loc, index, func) {
         	x.air = loadAir(x.loc.airloc);
         }
 
-        console.log("loc state: " + loc.state);
-
-        // let's load the prediction data
-		var preRef = new Firebase(FBWeatherURL + "/prediction/air/");
-		loc_meta.airpred = $firebaseObject(preRef.child(loc.state));
-
+        //console.log("air loc state: " + loc.state);
+        if (loc.state!=undefined && loc.state !="") {
+        	// let's load the prediction data
+			var preRef = new Firebase(FBWeatherURL + "/prediction/air/");
+			loc_meta.airpred = $firebaseObject(preRef.child(loc.state));
+		}
+		
       	// Finally let's get sound
       	// Let's not load TTS for now
       	// loadTTS(loc, loc_meta);
