@@ -151,7 +151,7 @@ $scope.drawMap = function(position) {
                 latitude: position.coords.latitude, //35.9, 
                 longitude: position.coords.longitude //127.7 
             },
-            zoom: 8,
+            zoom: 10,
             pan: 1,
          //  options: myAppServices.getMapOptions().mapOptions,
             control: {},
@@ -193,7 +193,7 @@ $scope.drawMap = function(position) {
 
  // navigator.geolocation.getCurrentPosition($scope.drawMap, $scope.handleError, $scope.options);  
  // let's not use the location
- var position = {coords: {latitude: 35.9, longitude:127.7}}
+ var position = {coords: {latitude: 37.43328611111111, longitude:126.9948}}
  $scope.drawMap(position);
 
  //  turnof all

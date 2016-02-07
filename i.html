@@ -118,27 +118,28 @@
 -->
 </div> <!-- box -->
 
-        <!-- 날씨 한마디 -->
-        <ion-list><form ng-submit="addTalk(loc_meta[$index]);">
-          <ion-item class="item-input-inset">
-            <label class="item-input-wrapper">
-              <input ng-model="talk.msg" ng-maxlength="80" type="text" 
-                placeholder="오늘 {{item.region}} 날씨/공기에 대해..."/>
-            </label>
-            <button class="button button-small">
-              한마디!
-            </button>
-          </ion-item>
-          </form> 
-        
-          <ion-item ng-repeat="talk in loc_meta[$index].talks">
-           <div class="text-left">
-            <img ng-src="img/av{{-talk.timestamp%12}}.png" height="24">
-            {{talk.msg}}
-            <span class="item-note">{{-talk.timestamp | timeAgo}}</span>
-          </div>
-          </ion-item>
-        </ion-list>
+    <!-- 날씨 한마디 -->
+  <ion-list>
+    <form ng-submit="addTalk(loc_meta[$index]);">
+      <ion-item class="item-input-inset">
+        <label class="item-input-wrapper">
+          <input ng-model="talk.msg" ng-maxlength="80" type="text" 
+            placeholder="오늘 {{item.region}} 날씨/공기에 대해..."/>
+        </label>
+        <button class="button button-small">
+          한마디!
+        </button>
+      </ion-item>
+      </form> 
+    
+      <ion-item ng-repeat="talk in loc_meta[$index].talks">
+       <div class="text-left">
+        <img ng-src="img/av{{-talk.timestamp%12}}.png" height="24">
+        {{talk.msg}}
+        <span class="item-note">{{-talk.timestamp | timeAgo}}</span>
+      </div>
+      </ion-item>
+  </ion-list>
 
   <ion-scroll>
 </ion-slide>
