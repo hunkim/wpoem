@@ -3,6 +3,10 @@
   height: 100%; 
 }
 
+.no-padding {
+    padding: 0px !important;
+}
+
 .marker-labels {
   width: 160px;
   padding: 10px;  
