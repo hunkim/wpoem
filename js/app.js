@@ -36,7 +36,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: 'g.html',
       controller: 'MapCtrl'
     });
-
+/*
     $stateProvider
     .state('test', {
      url: '/test',
@@ -44,7 +44,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
      controller: 'tCtrl'
     });
 
-
+*/
 /*
  $stateProvider
     .state('ngmap', {

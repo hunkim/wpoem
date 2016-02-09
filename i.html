@@ -33,7 +33,8 @@
       <div class="col col-50 text-center">
          <img ng-src="img/c{{loc_meta[$index].data.air.khaiValue | kindex}}.png" height="70">
          <div class="text-overlay-right? text-center"> 
-          <H4>{{loc_meta[$index].data.air.khaiValue|khai}}({{loc_meta[$index].data.air.khaiValue}})</H4>
+          <H4><small>대기환경 </small>
+            {{loc_meta[$index].data.air.khaiValue|khai}}({{loc_meta[$index].data.air.khaiValue}})</H4>
           <small>미세{{loc_meta[$index].data.air.pm10Value|pm10}}({{loc_meta[$index].data.air.pm10Value}})
           <span ng-show="loc_meta[$index].data.air.pm25Grade">
             초미세{{loc_meta[$index].data.air.pm25Value|pm25}}({{loc_meta[$index].data.air.pm25Value}})</span>

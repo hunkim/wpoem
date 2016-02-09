@@ -11,10 +11,10 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
            '<div class="text-center">' +
            '<h5>' + ' ' + m.loc.city + ' ' + m.loc.region +
            '</H5>' +
-           '<h4>' + m.weather.T1H + '&#x2103;' +
+           '<h4>' + m.weather.T1H + '&#x2103; ' +
            '<small>습도: ' + m.weather.REH + '%</small></h4>' + 
 
-           '<H4>공기 ' + $filter('khai')(m.air.khaiValue) + ' (' + m.air.khaiValue+')</H4>'+
+           '<H4><small>대기환경</small> ' + $filter('khai')(m.air.khaiValue) + ' (' + m.air.khaiValue+')</H4>'+
            '<p>미세먼지 ' + $filter('pm10')(m.air.pm10Value) +' (' + m.air.pm10Value + ')<p>' +
            '<p ng-show="alldata[' + i + '].air.pm25Grade">' +
             '초미세먼지 ' + $filter('pm25')(m.air.pm25Value) + ' (' + m.air.pm25Value  + ')</p>' +
