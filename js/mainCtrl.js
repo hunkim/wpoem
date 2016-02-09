@@ -1,4 +1,4 @@
-app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxDelegate, 
+app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDelegate, 
   $firebaseObject, $firebaseArray, timeAgo, $LocList, $MsgService, $ionicPopup) {
   // timeago setting
   timeAgo.settings.overrideLang = 'kr_KR';
@@ -98,12 +98,15 @@ app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxD
   // http://stackoverflow.com/questions/27853431/ion-list-does-not-refresh-after-state-go-is-called
   $scope.$on('$ionicView.beforeEnter', function () {
     // update slides
-    setTimeout(function() {
+
+    // http://www.sitepoint.com/understanding-angulars-apply-digest/
+    // Note: By the way, you should use $timeout service whenever possible which is setTimeout()
+    // with automatic $apply() so that you don’t have to call $apply() manually.
+    $timeout(function() {
         $ionicSlideBoxDelegate.update();
 
         $ionicSlideBoxDelegate.slide(0);
         $scope.slideHasChanged(0);
-        $scope.$apply();
     });
   });
 
@@ -115,16 +118,14 @@ app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxD
     $scope.loc_meta.splice($index, 1);
 
     // let's add this into the local storage
-    //$localstorage.setArray('locs', $scope.locs);
-
-    //setTimeout(function() {
-    var lastSlide = $scope.locs.length;
-    $ionicSlideBoxDelegate.slide(lastSlide);
+    // FIXME: It seems they are bounded
+    // No need to add
     
     // update slides
-    setTimeout(function() {
+    $timeout(function() {
+        var lastSlide = $scope.locs.length;
+        $ionicSlideBoxDelegate.slide(lastSlide);
         $ionicSlideBoxDelegate.update();
-        $scope.$apply();
       });
     
     $MsgService.success('삭제 되었습니다.', $loc.city + " " + $loc.region);
@@ -136,16 +137,16 @@ app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxD
     $scope.locs.splice(toIndex, 0, item);
 
     var loc_meta = $scope.loc_meta[fromIndex];
+    
     // let's remove the meta
     $scope.loc_meta.splice(fromIndex, 1);
     $scope.loc_meta.splice(toIndex, 0, loc_meta);
 
 
     // update slides
-    setTimeout(function() {
+    $timeout(function() {
         $ionicSlideBoxDelegate.update();
-        $scope.$apply();
-      });
+    });
   };
 
   $scope.addTalk = function(item) {
@@ -173,11 +174,10 @@ app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxD
       return; // move on
     }
 
-    setTimeout(function() {
+    $timeout(function() {
       var lastSlide = $ionicSlideBoxDelegate.slidesCount();
       $ionicSlideBoxDelegate.slide(lastSlide);
       $ionicSlideBoxDelegate.update();
-      $scope.$apply();
     });
     // reset the form
     $scope.addform = {};
