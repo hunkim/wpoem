@@ -99,9 +99,10 @@ app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxD
   $scope.$on('$ionicView.beforeEnter', function () {
     // update slides
     setTimeout(function() {
+        $ionicSlideBoxDelegate.update();
+
         $ionicSlideBoxDelegate.slide(0);
         $scope.slideHasChanged(0);
-        $ionicSlideBoxDelegate.update();
         $scope.$apply();
     });
   });
