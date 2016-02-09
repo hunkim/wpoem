@@ -31,7 +31,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('map', {
-      cache: false,
+      //cache: false,
       url: '/map',
       templateUrl: 'g.html',
       controller: 'MapCtrl'
