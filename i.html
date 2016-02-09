@@ -57,7 +57,7 @@
       {{loc_meta[$parent.$index].data.weatherprediction[0].T3H|number:0}}</small>
 
      </div>
-     <div ng-hide="$index<1 || $index>8" class="col text-center" ng-repeat="w in loc_meta[$index].data.weatherprediction">
+     <div ng-hide="$index<1 || $index>8 || w.time==-1" class="col text-center" ng-repeat="w in loc_meta[$index].data.weatherprediction">
      <small>{{w.time}}<br/>
       <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
       {{w.T3H|number:0}}</small>

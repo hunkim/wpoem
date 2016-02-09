@@ -112,6 +112,7 @@ var mapOptions = {
       zoom: 10,
       mapTypeId: google.maps.MapTypeId.ROADMAP};
   
+ 
 $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
 
