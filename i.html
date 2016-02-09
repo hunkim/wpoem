@@ -1,6 +1,7 @@
 <div class="bar bar-header">
     <button ng-hide="inConfigPage" class="button icon ion-navicon" ng-click="goConfig();">지역설정</button>
-    <h1 class="title">{{title}}</h1>
+    <h1 class="title">{{title}}{{position.coords.latitude}}</h1>
+    <!-- <a class="button icon ion-earth" href="#/map">지도보기</a> -->     
     <a class="button icon ion-earth" href="#/map">지도보기</a>
 </div>
 
@@ -126,7 +127,7 @@
           <input ng-model="talk.msg" ng-maxlength="80" type="text" 
             placeholder="오늘 {{item.region}} 날씨/공기에 대해..."/>
         </label>
-        <button class="button button-small">
+        <button class="button button-positive button-small">
           한마디!
         </button>
       </ion-item>
@@ -224,6 +225,7 @@
 <ion-scroll>
 </ion-slide>
 
-    </ion-slide-box>
-  </ion-content>
+</ion-slide-box>
+<div class="text-right"><small><small>ver 0.2</small></small></div>
+</ion-content>
 </div>

@@ -42,6 +42,10 @@
 pointer-events: initial;
 }
 
+#map{
+    width:100%;
+    height:100%;
+}
 /*
 .list-right-editing .item{
 pointer-events: initial;

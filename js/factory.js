@@ -21,16 +21,49 @@ app.factory ('StorageService', function ($localStorage) {
     add: _add,
     remove: _remove
   };
-})
+});
 
+// Local storage management 
+app.factory ('$MapService', function () {
+
+  var factory = {map:null, infoWindow:null, markers:[]}; 
+  return factory;
+
+});
+
+// Local storage management 
+app.factory ('$MsgService', function ($ionicLoading, toastr) {
+
+  var factory = {}; 
+
+  factory.show = function(msg) {
+    $ionicLoading.show({
+      template: msg
+    });
+  };
+
+  factory.hide = function(){
+    $ionicLoading.hide();
+  };
+
+  factory.success = function(title, msg) {
+    toastr.success(title, msg, {timeOut: 2000});
+  }
+
+  factory.warning = function(title, msg) {
+    toastr.warning(title, msg, {timeOut: 2000});
+  }
+
+  return factory;
+});
 
 // Loc and Metadata management
 app.factory('$LocList', function(StorageService, $firebaseArray, ngAudio, $firebaseObject) {
 	     
 	var factory = {}; 
 
-    var FBtalkURL = "https://wair.firebaseio.com";
-    var FBWeatherURL = "https://fwair.firebaseio.com";
+  var FBtalkURL = "https://wair.firebaseio.com";
+  var FBWeatherURL = "https://fwair.firebaseio.com";
 
     
 	// Loc and meta data

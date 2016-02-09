@@ -1,35 +1,44 @@
-/*
- * Map controlelr
- */
-app.controller('MapCtrl', function($scope, $filter,
-   $firebaseArray, timeAgo, $LocList, $ionicLoading,
-    uiGmapGoogleMapApi, uiGmapIsReady, toastr) {
+app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $LocList, 
+  $MsgService, $MapService, $timeout) {
+   
+  // default coordinate
+  $scope.coords = {latitude: 37.52, longitude:126.9948};  
 
-  var firebaseURL = "https://wair.firebaseio.com";
+  var makeContent = function(i) {
+    var m = $scope.alldata[i];
+    // http://stackoverflow.com/questions/14226975/angularjs-ng-include-inside-of-google-maps-infowindow
+    var info = 
+           '<div class="text-center">' +
+           '<h5>' + ' ' + m.loc.city + ' ' + m.loc.region +
+           '</H5>' +
+           '<h4>' + m.weather.T1H + '&#x2103;' +
+           '<small>습도: ' + m.weather.REH + '%</small></h4>' + 
 
-  $scope.locs = $LocList.getLoc();
+           '<H4>공기 ' + $filter('khai')(m.air.khaiValue) + ' (' + m.air.khaiValue+')</H4>'+
+           '<p>미세먼지 ' + $filter('pm10')(m.air.pm10Value) +' (' + m.air.pm10Value + ')<p>' +
+           '<p ng-show="alldata[' + i + '].air.pm25Grade">' +
+            '초미세먼지 ' + $filter('pm25')(m.air.pm25Value) + ' (' + m.air.pm25Value  + ')</p>' +
 
-  // Let's save meta data using nx and ny
-  $scope.loc_meta = $LocList.getLocMeta();
+            '<button ng-hide="alldata[' + i + '].added" ng-click="addMapLoc('+ i + ')" ' + 
+            'class="button button-positive icon-left ion-android-add-circle">' +
+            '지역추가' +
+            '</button>' +
+            '<button ng-show="alldata[' + i + '].added"  class="button button-positive icon-left ion-checkmark-round" disabled>'+
+            '추가 되었습니다.' +
+            '</button></div>';
 
-  $scope.myLocation = {
-    lng : '',
-    lat: ''
-  }
-
-  $scope.options = {
-    enableHighAccuracy: false,
-    timeout: 50000,
-    maximumAge: 0
+    var compiled = $compile(info)($scope);
+    $scope.$apply();//must be inside write new values for each marker
+    return compiled[0];
   };
+ 
+  $scope.addMapLoc = function(i) {
+    var mapLoc = $scope.alldata[i];
 
-  $scope.addMapLoc = function(mapLoc) {
-    console.log("Adding ..." + mapLoc);
-    
     // no state? Let's make it empty
     if (mapLoc.loc.state==undefined || mapLoc.loc.state=="") {
       mapLoc.loc.state=mapLoc.loc.city;
-      mapLoc.loc.city ="";
+      // mapLoc.loc.city ="";
     }
 
     var loc = {state:mapLoc.loc.state, 
@@ -38,37 +47,17 @@ app.controller('MapCtrl', function($scope, $filter,
               nx:mapLoc.loc.nx, ny:mapLoc.loc.ny};
     
     // add in the factory
-    if ($LocList.add(loc)==true) {
-      //toastr.success('등록 되었습니다.', loc.city + " " + loc.region, {timeOut: 2000});
-    } else {
-      toastr.warning('이미 등록된 곳입니다.', loc.city + " " + loc.region, {timeOut: 2000});
+    if ($LocList.add(loc)==false) {
+       $MsgService.warning('이미 등록된 곳입니다.', loc.city + " " + loc.region);
     }
 
-    
-    console.log(loc);
     mapLoc.added = true;
-  }
-
-  $scope.loading = function(msg) {
-    $ionicLoading.show({
-      template: msg
-    });
   };
 
-  $scope.done = function(){
-    $ionicLoading.hide();
-  };
+    
+  var addMarkers = function(x) {
+    console.log("Adding markers" + x.length);
 
-
-  // get firebase data
-  // I am not sure this is the right place to read
-  var ref = new Firebase(firebaseURL + "/map/");
-  var query = ref;
-
-  $scope.alldata = $firebaseArray(query);
-  $scope.loading("날씨 정보 가져오는중...");
-
-  $scope.alldata.$loaded().then(function(x) {
     for (var i=0; i<x.length; i++) {
       if (x[i].loc == undefined || 
           x[i].weather===undefined ||
@@ -76,127 +65,78 @@ app.controller('MapCtrl', function($scope, $filter,
         continue;
       }
 
-      //var sNo =  $filter('skyindex')(x[i].weather.SKY);
-      sNo = x[i].weather.SKY;
+      // http://wrightshq.com/playground/placing-multiple-markers-on-a-google-map-using-api-3/
+      var pos = new google.maps.LatLng(x[i].loc.latitude, x[i].loc.longtitude);
+
+      var sNo =  $filter('skyindex')(x[i].weather);
       var cNo =  $filter('kindex')(x[i].air.khaiValue); 
-
       var iconUrl = 'img/i_s' + sNo + "_c" + cNo + '.png';
-     
-      x[i].id = i; 
-      x[i].coords = {
-          latitude: x[i].loc.latitude,
-          longitude: x[i].loc.longtitude
-      };
+      
 
-      x[i].showWindow = false;
-      x[i].closeClick = true;
-      x[i].show = true;
-      x[i].icon = {url: iconUrl};
-      // labelClass:'marker_labels',labelAnchor:'12 60',labelContent:'title'
-      // http://stackoverflow.com/questions/29589911/showing-marker-labels-using-angular-google-maps-directive
-
-      if (i%2==0) {
-        x[i].options = {
-            draggable: false,
-            labelAnchor: "-11 52",
-            labelClass: "glabel",
-            labelContent: x[i].weather.T1H + "&#x2103;"
-        };
-      } else {
-        x[i].options = {
-            draggable: false,
-         //   labelAnchor: "-11 52",
-         //   labelClass: "glabel",
-         //   labelContent: x[i].weather.T1H + "&#x2103;"
-        };
-      }
-
-    }
-
-    $scope.done();  
-  });
-
-
-  $scope.drawMapOld = function(position) {
-
-    //$scope.$apply is needed to trigger the digest cycle when the geolocation arrives and to update all the watchers
-    $scope.$apply(function() {
-      $scope.myLocation.lng = position.coords.longitude;
-      $scope.myLocation.lat = position.coords.latitude;
-
-      $scope.myLocation.lng = "";
-      $scope.myLocation.lat = "";
-
-      $scope.map = {
-        center: {
-          latitude: $scope.myLocation.lat,
-          longitude: $scope.myLocation.lng
-        },
-        zoom: 7,
-        pan: 1
-      };
-    });
-  }
-
-// http://stackoverflow.com/questions/28247260/angular-google-maps-run-function-once-after-initial-map-load
-$scope.drawMap = function(position) {
- // $scope.loading("지도 그리는 중...");
-
-  uiGmapGoogleMapApi
-    .then(function(maps){
-        $scope.googlemap = {};
-        $scope.map = {
-            center: {
-              // 대전 유성구 신성동
-                latitude: position.coords.latitude, //35.9, 
-                longitude: position.coords.longitude //127.7 
-            },
-            zoom: 10,
-            pan: 1,
-         //  options: myAppServices.getMapOptions().mapOptions,
-            control: {},
-            events: {
-                tilesloaded: function (maps, eventName, args) {
-                },
-                dragend: function (maps, eventName, args) {
-                },
-                zoom_changed: function (maps, eventName, args) {
-                  console.log(args);
+      // bounds.extend(position);
+      var marker = new google.maps.Marker({
+            position: pos,
+            map: $scope.map,
+            icon: {url: iconUrl},
+            draggable:false,
+            title: "test"
+      });
+        
+      // Allow each marker to have an info window    
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                if(marker.open) {                
+                  infoWindow.close();
+                  marker.open = false;
+                  return;
                 }
-            }
-        };
-    });
+                
+                var info = makeContent(i);
+                infoWindow.setContent(info);
+                infoWindow.open($scope.map, marker);
+                marker.open = true;
+          }
+      })(marker, i));
 
-  uiGmapIsReady.promise()                     // this gets all (ready) map instances - defaults to 1 for the first map
-  .then(function(instances) {                 // instances is an array object
-    // var maps = instances[0].map;            // if only 1 map it's found at index 0 of array
-    //  $scope.myOnceOnlyFunction(maps);        // this function will only be applied on initial map load (once ready)
-    // $scope.done();
-  });
-
-  $scope.myOnceOnlyFunction = function(maps){  // this will only be run once on initial load
-      var center = maps.getCenter();           // examples of 'map' manipulation
-      var lat = center.lat();
-      var lng = center.lng();
-      console.log('I\'ll only say this once ! \n Lat : ' + lat + '\n Lng : ' + lng);
+      // Finally we are done
+      $MsgService.hide();
+    }
   };
 
+
+var infoWindow = new google.maps.InfoWindow();
+var latLng = new google.maps.LatLng($scope.coords.latitude, $scope.coords.longitude);
+ 
+var mapOptions = {
+      center: latLng,
+      zoom: 10,
+      mapTypeId: google.maps.MapTypeId.ROADMAP};
+  
+$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+
+$scope.centerMap = function(pos) {
+    // No position? Let's use default
+    if (pos === undefined || pos.coords===undefined ||
+          pos.coords.latitude === undefined) {
+      return;
+    }  
+  $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
 }
 
-  $scope.handleError = function(error) {  
-    console.warn('ERROR(' + error.code + '): ' + error.message);
-    if(error.code==1) { //User denied Geolocation
-      var position = {coords: {latitude: 35.9, longitude:127.7}}
-      $scope.drawMap(position);
-    }
-  }
+ 
+  
+if (true) {
+    navigator.geolocation.getCurrentPosition
+          ($scope.centerMap, null,
+          { maximumAge: 10000, timeout: 10000, enableHighAccuracy: true });  
+} 
 
- // navigator.geolocation.getCurrentPosition($scope.drawMap, $scope.handleError, $scope.options);  
- // let's not use the location
- var position = {coords: {latitude: 37.43328611111111, longitude:126.9948}}
- $scope.drawMap(position);
+ 
+  var ref = new Firebase("https://wair.firebaseio.com" + "/map/");
+  $scope.alldata = $firebaseArray(ref);
+  $scope.alldata.$loaded(addMarkers);
+  $MsgService.show("날씨 정보 가져오는중...");
 
- //  turnof all
- $scope.done();  
 
 });
