@@ -1,5 +1,5 @@
 app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxDelegate, 
-  $firebaseObject, $firebaseArray, timeAgo, $LocList, $MsgService) {
+  $firebaseObject, $firebaseArray, timeAgo, $LocList, $MsgService, $ionicPopup) {
   // timeago setting
   timeAgo.settings.overrideLang = 'kr_KR';
 
@@ -230,5 +230,21 @@ app.controller('MainCtrl', function($rootScope, $scope, $filter, $ionicSlideBoxD
 
 // turn off all loading message just in case
 $MsgService.hide();  
+
+
+// ---------------------- About pop up --
+// Triggered on a button click, or some other target
+$scope.showAbout = function() {
+  // An elaborate, custom popup
+  var myPopup = $ionicPopup.show({
+    templateUrl: "about.html",
+    title: '시와 날씨 시험버전 0.2',
+    subTitle: '실시간 대기상태와 날씨를 확인하면서 이와 어울리는 시 한구절 어때요? 날씨에 대해 수다도 나누어요.',
+    buttons: [{ text: '닫기', type: 'button-positive'}]
+  });
+
+  myPopup.then(function(res) {
+  });
+};
 
 });

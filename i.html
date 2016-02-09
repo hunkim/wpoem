@@ -1,5 +1,6 @@
 <div class="bar bar-header">
     <button ng-hide="inConfigPage" class="button icon ion-navicon" ng-click="goConfig();">지역설정</button>
+    <button ng-show="inConfigPage" class="button icon ion-information-circled" ng-click="showAbout();">앱정보</button>
     <h1 class="title">{{title}}{{position.coords.latitude}}</h1>
     <!-- <a class="button icon ion-earth" href="#/map">지도보기</a> -->     
     <a class="button icon ion-earth" href="#/map">지도보기</a>
