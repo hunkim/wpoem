@@ -6,10 +6,11 @@
     <a class="button button-stable icon ion-earth" href="#/map">지도보기</a>
 </div>
 
+
 <ion-content class="has-header">
-  <ion-slide-box on-slide-changed="slideHasChanged($index)">    
-    <ion-slide ng-repeat="item in locs">
-     <ion-scroll>  <!-- make eveything scrolable -->
+<ion-slide-box on-slide-changed="slideHasChanged($index)">    
+  <ion-slide ng-repeat="item in locs">
+    <ion-scroll direction="y" scrollbar-x="false"  style="width: 100%; height: 100%;" >
        <div class="card"> 
          <!-- 
           <h3>{{item.city}} {{item.region}}     
@@ -20,55 +21,59 @@
           </h3>
         -->
 
-    <div class="row">
-      <div class="col col-50 text-center">
-          <img ng-src="img/s{{loc_meta[$index].data.weather | skyindex}}.png" height="90">
-           <div class="text-center text-overlay-left?">
-                <h4>{{loc_meta[$index].data.weather | sky}}
-                  {{loc_meta[$index].data.weather.T1H}}&#x2103;</h4>
-                  습도: {{loc_meta[$index].data.weather.REH}}% 
-            </div>
-      </div> <!-- col-50 -->
+        <div class="row">
+        
+          <div class="col col-50 text-center">
+              <img ng-src="img/s{{loc_meta[$index].data.weather | skyindex}}.png" height="90">
+               <div class="text-center text-overlay-left?">
+                    <h4>{{loc_meta[$index].data.weather | sky}}
+                      {{loc_meta[$index].data.weather.T1H}}&#x2103;</h4>
+                      습도: {{loc_meta[$index].data.weather.REH}}% 
+                </div>
+          </div> <!-- col-50 -->
 
-      <div class="col col-50 text-center">
-         <img ng-src="img/c{{loc_meta[$index].data.air.khaiValue | kindex}}.png" height="70">
-         <div class="text-overlay-right? text-center"> 
-          <H4><small>대기환경 </small>
-            {{loc_meta[$index].data.air.khaiValue|khai}}({{loc_meta[$index].data.air.khaiValue}})</H4>
-          <small>미세{{loc_meta[$index].data.air.pm10Value|pm10}}({{loc_meta[$index].data.air.pm10Value}})
-          <span ng-show="loc_meta[$index].data.air.pm25Grade">
-            초미세{{loc_meta[$index].data.air.pm25Value|pm25}}({{loc_meta[$index].data.air.pm25Value}})</span>
+          <div class="col col-50 text-center">
+             <img ng-src="img/c{{loc_meta[$index].data.air.khaiValue | kindex}}.png" height="70">
+             <div class="text-overlay-right? text-center"> 
+              <H4><small>대기환경 </small>
+                {{loc_meta[$index].data.air.khaiValue|khai}}({{loc_meta[$index].data.air.khaiValue}})</H4>
+                <small>미세{{loc_meta[$index].data.air.pm10Value|pm10}}({{loc_meta[$index].data.air.pm10Value}})
+                <span ng-show="loc_meta[$index].data.air.pm25Grade">
+                초미세{{loc_meta[$index].data.air.pm25Value|pm25}}({{loc_meta[$index].data.air.pm25Value}})</span>
 
-            <br/><A style="text-decoration:none;" href="#">
-              <span ng-show="loc_meta[$index].airpred.aftertomorrow.PM10=='예보없음'"> 오늘: {{loc_meta[$index].airpred.today.PM10}}</span>
-              <span> 내일: {{loc_meta[$index].airpred.tomorrow.PM10}}</span>
-              <span ng-hide="loc_meta[$index].airpred.aftertomorrow.PM10=='예보없음'"> 모레: {{loc_meta[$index].airpred.aftertomorrow.PM10}}</span>
-            </A>
-          </small>
-        </div>
+                  <br/><A style="text-decoration:none;" href="#">
+                  <span ng-show="loc_meta[$index].airpred.aftertomorrow.PM10=='예보없음'"> 오늘: {{loc_meta[$index].airpred.today.PM10}}</span>
+                  <span> 내일: {{loc_meta[$index].airpred.tomorrow.PM10}}</span>
+                  <span ng-hide="loc_meta[$index].airpred.aftertomorrow.PM10=='예보없음'"> 모레: {{loc_meta[$index].airpred.aftertomorrow.PM10}}</span>
+                  </A>
+                </small>
+              </div>
+        
+          </div> <!-- col-50 -->
+        </div> <!-- row -->  
+      </div>   <!-- card -->
+
+      <ion-scroll direction="x" scrollbar-y="false" style="width: 100%; height: 75px;">
+      <div style="width: 800px; height: 75px;" on-touch="mouseoverWideDiv()" on-release="mouseleaveWideDiv()"> 
+        <div class="row">
+           <!-- <div class="col"><small><p>예보</p></small></div> -->
+           <div class="col"><small><small>시간<br/>날씨<br/>&#x2103;</small></small></div>
+           <div ng-hide="$index==0" class="col text-center" 
+                ng-repeat="w in loc_meta[$index].data.wnowprediction">
+           <small>{{w.time}}<br/><img ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
+            <!-- let's use the prediction -->
+            {{loc_meta[$parent.$index].data.weatherprediction[0].T3H|number:0}}</small>
+
+           </div>
+           <div ng-hide="$index<1 || w.time==-1" class="col text-center" ng-repeat="w in loc_meta[$index].data.weatherprediction">
+           <small>{{w.time}}<br/>
+            <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
+            {{w.T3H|number:0}}</small>
+           </div>
+        </div> <!-- row -->
       </div>
-    </div> <!-- row -->  
-
-  <div class="row">
-     <!-- <div class="col"><small><p>예보</p></small></div> -->
-     <div class="col"><small><small>시간<br/>날씨<br/>&#x2103;</small></small></div>
-     <div ng-hide="$index==0" class="col text-center" 
-          ng-repeat="w in loc_meta[$index].data.wnowprediction">
-     <small>{{w.time}}<br/><img ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
-      <!-- let's use the prediction -->
-      {{loc_meta[$parent.$index].data.weatherprediction[0].T3H|number:0}}</small>
-
-     </div>
-     <div ng-hide="$index<1 || $index>8 || w.time==-1" class="col text-center" ng-repeat="w in loc_meta[$index].data.weatherprediction">
-     <small>{{w.time}}<br/>
-      <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
-      {{w.T3H|number:0}}</small>
-     </div>
-  </div> <!-- row -->
-
-</div>   <!-- card -->
-
-         
+      </ion-scroll> <!-- scroll --> 
+     <!-- box -->
           <!--
           T1H 기온 0.1 ℃ -50 ℃ 10 
           RN1 1시간 강수량 범주 (1 mm) -1 mm 8
@@ -106,126 +111,123 @@
 
 
     <!-- 시집 -->
-<div class="box">
-  <div class="item item-text-wrap">
-   <!--  눈이 소리없이 내린다. 눈이 징소리처럼 올라간다. - 이경임의 측제 - -->
-  {{loc_meta[$index].data.weather.poem}} 
-  </div>
-  <!-- 
-  <div class="item item-text-wrap">
-    This is a basic Card with some text.
-  </div>
-  <div class="item item-divider">
-    I'm a Footer in a Card!
-  </div>
--->
-</div> <!-- box -->
+    <div class="box">
+      <div class="item item-text-wrap">
+       <!--  눈이 소리없이 내린다. 눈이 징소리처럼 올라간다. - 이경임의 측제 - -->
+      {{loc_meta[$index].data.weather.poem}} 
+      </div>
+      <!-- 
+      <div class="item item-text-wrap">
+        This is a basic Card with some text.
+      </div>
+      <div class="item item-divider">
+        I'm a Footer in a Card!
+      </div>
+    -->
+    </div> <!-- box -->
 
     <!-- 날씨 한마디 -->
-  <ion-list>
-    <form ng-submit="addTalk(loc_meta[$index]);">
-      <ion-item class="item-input-inset">
-        <label class="item-input-wrapper">
-          <input ng-model="talk.msg" ng-maxlength="80" type="text" 
-            placeholder="오늘 {{item.region}} 날씨/공기에 대해..."/>
-        </label>
-        <button class="button button-positive button-small">
-          한마디!
-        </button>
-      </ion-item>
-      </form> 
+    <ion-list>
+      <form ng-submit="addTalk(loc_meta[$index]);">
+        <ion-item class="item-input-inset">
+          <label class="item-input-wrapper">
+            <input ng-model="talk.msg" ng-maxlength="80" type="text" 
+              placeholder="오늘 {{item.region}} 날씨/공기에 대해..."/>
+          </label>
+          <button class="button button-positive button-small">
+            한마디!
+          </button>
+        </ion-item>
+        </form> 
     
       <ion-item ng-repeat="talk in loc_meta[$index].talks">
-       <div class="text-left">
-        <img ng-src="img/av{{-talk.timestamp%12}}.png" height="24">
-        {{talk.msg}}
-        <span class="item-note">{{-talk.timestamp | timeAgo}}</span>
-      </div>
+        <div class="text-left">
+          <img ng-src="img/av{{-talk.timestamp%12}}.png" height="24">
+          {{talk.msg}}
+          <span class="item-note">{{-talk.timestamp | timeAgo}}</span>
+        </div>
       </ion-item>
-  </ion-list>
-
+    </ion-list>
   <ion-scroll>
 </ion-slide>
 
-<!-- Conf slide -->    
+<!-- New Conf slide -->    
 <ion-slide>
-
-
-
-<!-- Address input -->
-<div class="list">
-    <div class="card"> 
-      <label class="item item-input item-select">
-        시도
-         <select ng-model="addform.state" ng-change="getCities();">
-            <option ng-repeat="state in stateNames">{{state}}</option>
-          </select>
-        
-      </label>
-
-    <div class="row" ng-show="addform.loaded">
-      <div class="col  no-padding">
+  <!-- Address input -->
+  <div class="list">
+      <div class="card"> 
         <label class="item item-input item-select">
-          시구
-          <select ng-model="addform.city" ng-change="getRegions();">
-            <option ng-repeat="city in cities">{{city.$id}}</option>
-          </select>
+          시도
+           <select ng-model="addform.state" ng-change="getCities();">
+              <option ng-repeat="state in stateNames">{{state}}</option>
+            </select>
+          
         </label>
+
+      <div class="row" ng-show="addform.loaded">
+        <div class="col  no-padding">
+          <label class="item item-input item-select">
+            시구
+            <select ng-model="addform.city" ng-change="getRegions();">
+              <option ng-repeat="city in cities">{{city.$id}}</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="col  no-padding"> 
+          <label class="item item-input item-select">
+            동
+            <select ng-model="addform.region">
+              <option ng-repeat="(region, regionInfo) in regions">{{region}}</option>
+            </select>
+          </label>
+        </div>
       </div>
 
-      <div class="col  no-padding"> 
-        <label class="item item-input item-select">
-          동
-          <select ng-model="addform.region">
-            <option ng-repeat="(region, regionInfo) in regions">{{region}}</option>
-          </select>
-        </label>
-      </div>
+      <button ng-click="addCity();" ng-disabled="!addform.region" 
+              class="button button-block button-positive ion-android-add-circle">
+        추가하기
+      </button>
     </div>
-
-    <button ng-click="addCity();" ng-disabled="!addform.region" 
-            class="button button-block button-positive ion-android-add-circle">
-      추가하기
-    </button>
   </div>
-</div>
 
-<ion-scroll>
+  <!-- scroll the list of cities -->
+  <ion-scroll>
     <ion-list 
           show-delete="true"
           show-reorder="true"
           can-swipe="false">
 
-  <ion-item ng-repeat="item in locs" ng-click="goSlide($index)"
+        <ion-item ng-repeat="item in locs" ng-click="goSlide($index)"
             class="item-thumbnail-left">
   
-    <img ng-src="img/s{{loc_meta[$index].data.weather | skyindex}}_c{{loc_meta[$index].data.air.khaiValue | kindex}}.png" ng-click="goSlide($index)">
+          <img ng-src="img/s{{loc_meta[$index].data.weather | skyindex}}_c{{loc_meta[$index].data.air.khaiValue | kindex}}.png" ng-click="goSlide($index)">
 
-    <!-- <a href="#" ng-click="goSlide($index);"> -->
-    <h2>{{item.state}} {{item.city}} {{item.region}}</h2>
-    <p>{{loc_meta[$index].data.weather | sky}}
-                  {{loc_meta[$index].data.weather.T1H}}&#x2103;
-                  ({{loc_meta[$index].data.weather.REH}}%)</p> 
-    <p>통합대기{{loc_meta[$index].data.air.khaiValue|khai}}
-      ({{loc_meta[$index].data.air.khaiValue}})</p>
-  
-    <ion-option-button class="button-positive">Share</ion-option-button>
+          <!-- <a href="#" ng-click="goSlide($index);"> -->
+          <h2>{{item.state}} {{item.city}} {{item.region}}</h2>
+          <p>{{loc_meta[$index].data.weather | sky}}
+                        {{loc_meta[$index].data.weather.T1H}}&#x2103;
+                        ({{loc_meta[$index].data.weather.REH}}%)</p> 
+          <p>통합대기{{loc_meta[$index].data.air.khaiValue|khai}}
+            ({{loc_meta[$index].data.air.khaiValue}})</p>
+        
+          <ion-option-button class="button-positive">Share</ion-option-button>
 
-    <ion-option-button class="button-assertive"
-                       ng-click="remove($index, item)">
-      Delete
-    </ion-option-button>
-    <ion-delete-button class="ion-minus-circled"
-                       ng-click="remove($index, item);">
-    </ion-delete-button>
-    <ion-reorder-button class="ion-navicon"
-                        on-reorder="reorder(item, $fromIndex, $toIndex)">
-    </ion-reorder-button>
+          <ion-option-button class="button-assertive"
+                             ng-click="remove($index, item)">
+            Delete
+          </ion-option-button>
+          <ion-delete-button class="ion-minus-circled"
+                             ng-click="remove($index, item);">
+          </ion-delete-button>
+          <ion-reorder-button class="ion-navicon"
+                              on-reorder="reorder(item, $fromIndex, $toIndex)">
+          </ion-reorder-button>
 
-  </ion-item>
-</ion-list>
-<ion-scroll>
-</ion-slide>
+        </ion-item>
+      </ion-list>
+    <ion-scroll>
+  </ion-slide>
 
 </ion-slide-box>
 <div class="text-right"><small><small>ver 0.2</small></small></div>

@@ -253,4 +253,16 @@ $scope.showAbout = function() {
   });
 };
 
+
+
+// X scroll
+// http://stackoverflow.com/questions/35308264/ionic-can-i-disable-the-swipe-action-in-a-certain-area-div-in-ion-slide/35311465#35311465
+$scope.mouseoverWideDiv = function() {
+    $ionicSlideBoxDelegate.enableSlide(false);
+};
+
+$scope.mouseleaveWideDiv = function() {
+    $ionicSlideBoxDelegate.enableSlide(true);
+};
+
 });
