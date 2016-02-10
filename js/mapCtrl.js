@@ -21,7 +21,7 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
 
             '<button ng-hide="alldata[' + i + '].added" ng-click="addMapLoc('+ i + ')" ' + 
             'class="button button-positive icon-left ion-android-add-circle">' +
-            '지역추가' +
+            '지역추가하기' +
             '</button>' +
             '<button ng-show="alldata[' + i + '].added"  class="button button-positive icon-left ion-checkmark-round" disabled>'+
             '추가 되었습니다.' +
@@ -42,13 +42,13 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
     }
 
     if (mapLoc.$id === undefined) {
-       $MsgService.warning('이 지역을 등록할수 없습니다. ($id 없슴)', loc.city + " " + loc.region);
+       $MsgService.warning('이 지역을 추가할수 없습니다. ($id 없슴)', loc.city + " " + loc.region);
        return;
     }
 
     var nxny = mapLoc.$id.split("-");
     if (nxny.length!=2) {
-       $MsgService.warning('이 지역을 등록할수 없습니다. 잘못된 $id:' + mapLoc.$id, loc.city + " " + loc.region);
+       $MsgService.warning('이 지역을 추가할수 없습니다. 잘못된 $id:' + mapLoc.$id, loc.city + " " + loc.region);
        return; 
     }
 
@@ -59,7 +59,7 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
     
     // add in the factory
     if ($LocList.add(loc)==false) {
-       $MsgService.warning('이미 등록된 곳입니다.', loc.city + " " + loc.region);
+       $MsgService.warning('이미 추가된 곳입니다.', loc.city + " " + loc.region);
     }
 
     mapLoc.added = true;

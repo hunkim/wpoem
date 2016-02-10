@@ -77,17 +77,23 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
 
   // based on the slides, update the title
   $scope.slideHasChanged = function(index) {
-    // last page?
-    if (index>=$ionicSlideBoxDelegate.slidesCount()-1
-      || $scope.locs[index]==undefined ) {
-      $scope.title = "지역 설정및 추가";
-      $scope.inConfigPage = true;
+    // last page? 
+    // timout gives me the correct $ionicSlideBoxDelegate.slidesCount()
+    // Bug fix! : no correct title from the first map add 
+    $timeout(function () {
+      if (index>=$ionicSlideBoxDelegate.slidesCount()-1
+        || $scope.locs[index]==undefined ) {
+        $scope.title = "지역 설정및 추가";
+        $scope.inConfigPage = true;
 
-      return;
-    } 
+        console.log(index);
+        console.log($ionicSlideBoxDelegate.slidesCount());      
+        return;
+      } 
 
-    $scope.inConfigPage = false;
-    $scope.title = $scope.locs[index].city + " " + $scope.locs[index].region;
+      $scope.inConfigPage = false;
+      $scope.title = $scope.locs[index].city + " " + $scope.locs[index].region;
+    });
   }
 
   // goto slide
@@ -102,12 +108,12 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
     // http://www.sitepoint.com/understanding-angulars-apply-digest/
     // Note: By the way, you should use $timeout service whenever possible which is setTimeout()
     // with automatic $apply() so that you don’t have to call $apply() manually.
-    $timeout(function() {
-        $ionicSlideBoxDelegate.update();
 
-        $ionicSlideBoxDelegate.slide(0);
-        $scope.slideHasChanged(0);
-    });
+    // update, since there might some additions
+    $ionicSlideBoxDelegate.update();
+
+    $ionicSlideBoxDelegate.slide(0);
+    $scope.slideHasChanged(0);
   });
 
 
@@ -168,9 +174,9 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
         nx:regionInfo.nx, ny:regionInfo.ny};
 
     if ($LocList.add(loc)==true) {
-      $MsgService.success('등록 되었습니다.', loc.city + " " + loc.region);
+      $MsgService.success('추가 되었습니다.', loc.city + " " + loc.region);
     } else {
-      $MsgService.warning('이미 등록된 곳입니다.', loc.city + " " + loc.region);
+      $MsgService.warning('이미 추가된 곳입니다.', loc.city + " " + loc.region);
       return; // move on
     }
 

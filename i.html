@@ -1,9 +1,9 @@
 <div class="bar bar-header">
-    <button ng-hide="inConfigPage" class="button icon ion-navicon" ng-click="goConfig();">지역설정</button>
-    <button ng-show="inConfigPage" class="button icon ion-information-circled" ng-click="showAbout();">앱정보</button>
+    <button ng-hide="inConfigPage" class="button button-stable icon ion-ios-gear" ng-click="goConfig();"> 지역추가/삭제</button>
+    <button ng-show="inConfigPage" class="button button-stable icon ion-information-circled" ng-click="showAbout();"> 앱정보</button>
     <h1 class="title">{{title}}{{position.coords.latitude}}</h1>
     <!-- <a class="button icon ion-earth" href="#/map">지도보기</a> -->     
-    <a class="button icon ion-earth" href="#/map">지도보기</a>
+    <a class="button button-stable icon ion-earth" href="#/map">지도보기</a>
 </div>
 
 <ion-content class="has-header">
@@ -184,7 +184,7 @@
     </div>
 
     <button ng-click="addCity();" ng-disabled="!addform.region" 
-            class="button button-block button-positive">
+            class="button button-block button-positive ion-android-add-circle">
       추가하기
     </button>
   </div>
