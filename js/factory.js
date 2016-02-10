@@ -84,7 +84,7 @@ app.factory('$LocList', function(StorageService, $firebaseArray, ngAudio, $fireb
 
   var loadTalks = function(loc, loc_meta) {
     var ref = new Firebase(FBtalkURL + "/talks/");
-    var query = ref.child(loc.nx).child(loc.ny).orderByChild("timestamp").limitToFirst(7);
+    var query = ref.child(loc.nx).child(loc.ny).orderByChild("timestamp").limitToFirst(10);
     loc_meta.talks =  $firebaseArray(query);
   }
 

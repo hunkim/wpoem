@@ -85,9 +85,6 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
         || $scope.locs[index]==undefined ) {
         $scope.title = "지역 설정및 추가";
         $scope.inConfigPage = true;
-
-        console.log(index);
-        console.log($ionicSlideBoxDelegate.slidesCount());      
         return;
       } 
 

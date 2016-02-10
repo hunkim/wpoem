@@ -127,8 +127,8 @@
     </div> <!-- box -->
 
     <!-- 날씨 한마디 -->
+    <form ng-submit="addTalk(loc_meta[$index]);">
     <ion-list>
-      <form ng-submit="addTalk(loc_meta[$index]);">
         <ion-item class="item-input-inset">
           <label class="item-input-wrapper">
             <input ng-model="talk.msg" ng-maxlength="80" type="text" 
@@ -138,16 +138,19 @@
             한마디!
           </button>
         </ion-item>
-        </form> 
+       
     
-      <ion-item ng-repeat="talk in loc_meta[$index].talks">
-        <div class="text-left">
+      <ion-item ng-repeat="talk in loc_meta[$index].talks"> 
           <img ng-src="img/av{{-talk.timestamp%12}}.png" height="24">
           {{talk.msg}}
           <span class="item-note">{{-talk.timestamp | timeAgo}}</span>
-        </div>
+    
+      </ion-item>
+      <ion-item ng-show="loc_meta[$index].talks.length==10">
+        <i class="icon ion-information-circled button button-clear button-positive" disabed> 최신 10개의 메시지만 보여 줍니다. </i>
       </ion-item>
     </ion-list>
+   </form>
   <ion-scroll>
 </ion-slide>
 
