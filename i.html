@@ -42,7 +42,8 @@
                 초미세{{loc_meta[$index].data.air.pm25Value|pm25}}({{loc_meta[$index].data.air.pm25Value}})</span>
 
                   <br/><A style="text-decoration:none;" href="#">
-                  <span ng-show="loc_meta[$index].airpred.aftertomorrow.PM10=='예보없음'"> 오늘: {{loc_meta[$index].airpred.today.PM10}}</span>
+                  <span ng-hide="loc_meta[$index].airpred.today==undefined || loc_meta[$index].airpred.aftertomorrow.PM10!='예보없음'"> 
+                    오후 {{loc_meta[$index].airpred.today.PM10}}</span>
                   <span> 내일: {{loc_meta[$index].airpred.tomorrow.PM10}}</span>
                   <span ng-hide="loc_meta[$index].airpred.aftertomorrow.PM10=='예보없음'"> 모레: {{loc_meta[$index].airpred.aftertomorrow.PM10}}</span>
                   </A>
