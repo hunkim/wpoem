@@ -1,7 +1,8 @@
 <div class="bar bar-header">
     <button ng-hide="inConfigPage" class="button button-stable icon ion-ios-gear" ng-click="goConfig();"> 지역추가/삭제</button>
     <button ng-show="inConfigPage" class="button button-stable icon ion-information-circled" ng-click="showAbout();"> 앱정보</button>
-    <h1 class="title">{{title}}{{position.coords.latitude}}</h1>
+    <h1 ng-show="isWebView" class="title">{{title}}</h1>
+    <h2 ng-hide="isWebView" class="title">{{title}}</h2>
     <!-- <a class="button icon ion-earth" href="#/map">지도보기</a> -->     
     <a class="button button-stable icon ion-earth" href="#/map">지도보기</a>
 </div>
@@ -10,7 +11,7 @@
 <ion-content class="has-header">
 <ion-slide-box on-slide-changed="slideHasChanged($index)">    
   <ion-slide ng-repeat="item in locs">
-    <ion-scroll ng-if="$index==currentSlide" direction="y" scrollbar-x="false"  style="width: 100%; height: 100%;" >
+    <ion-scroll ng-if="!isIOS || $index==currentSlide" direction="y" scrollbar-x="false"  style="width: 100%; height: 100%;" >
        <div class="card card-margin"> 
          <!-- 
           <h3>{{item.city}} {{item.region}}     
@@ -158,7 +159,7 @@
 <!-- New Conf slide -->    
 <ion-slide>
   <!-- Address input -->
-  <div class="list">
+  <div class="list" ng-if="!isIOS || inConfigPage">
       <div class="card"> 
         <label class="item item-input item-select">
           시도
@@ -196,7 +197,7 @@
   </div>
 
   <!-- scroll the list of cities -->
-  <ion-scroll>
+  <ion-scroll ng-if="!isIOS || inConfigPage">
     <ion-list 
           show-delete="true"
           show-reorder="true"
@@ -215,12 +216,6 @@
           <p>통합대기{{loc_meta[$index].data.air.khaiValue|khai}}
             ({{loc_meta[$index].data.air.khaiValue}})</p>
         
-          <ion-option-button class="button-positive">Share</ion-option-button>
-
-          <ion-option-button class="button-assertive"
-                             ng-click="remove($index, item)">
-            Delete
-          </ion-option-button>
           <ion-delete-button class="ion-minus-circled"
                              ng-click="remove($index, item);">
           </ion-delete-button>
@@ -234,6 +229,19 @@
   </ion-slide>
 
 </ion-slide-box>
-<div class="text-right"><small><small>ver 0.2</small></small></div>
 </ion-content>
+</div>
+
+
+<div ng-if="isWebView">
+  WebView
+<script ng-if="isWebView">
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73628928-1', 'auto');
+  ga('send', 'pageview');
+</script>
 </div>

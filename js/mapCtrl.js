@@ -1,9 +1,18 @@
 app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $LocList, 
   $MsgService, $MapService, $timeout) {
    
+  // https://blog.nraboy.com/2014/06/using-google-analytics-ionicframework/
+  // http://stackoverflow.com/questions/29664948/does-anybody-know-what-does-uncaught-referenceerror-analytics-is-not-defined
+  if(typeof analytics !== 'undefined') { analytics.trackView("Map Controller"); }
+ 
+  $scope.initEvent = function() {
+      if(typeof analytics !== 'undefined') { analytics.trackEvent("Category", "Action", "Label", 25); }
+  }
+
   // default coordinate
   $scope.coords = {latitude: 37.52, longitude:126.9948};  
-
+  $scope.infoWindow = new google.maps.InfoWindow();
+ 
   var makeContent = function(i) {
     var m = $scope.alldata[i];
     // http://stackoverflow.com/questions/14226975/angularjs-ng-include-inside-of-google-maps-infowindow
@@ -95,14 +104,14 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
             return function() {
                 if(marker.open) {                
-                  infoWindow.close();
+                  $scope.infoWindow.close();
                   marker.open = false;
                   return;
                 }
                 
                 var info = makeContent(i);
-                infoWindow.setContent(info);
-                infoWindow.open($scope.map, marker);
+                $scope.infoWindow.setContent(info);
+                $scope.infoWindow.open($scope.map, marker);
                 marker.open = true;
           }
       })(marker, i));
@@ -113,40 +122,53 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
   };
 
 
-var infoWindow = new google.maps.InfoWindow();
-var latLng = new google.maps.LatLng($scope.coords.latitude, $scope.coords.longitude);
- 
-var mapOptions = {
-      center: latLng,
-      zoom: 10,
-      mapTypeId: google.maps.MapTypeId.ROADMAP};
-  
- 
-$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
+  $scope.centerMap = function(pos) {
+      // No position? Let's use default
+      if (pos === undefined || pos.coords===undefined ||
+            pos.coords.latitude === undefined) {
+        return;
+      }  
+    $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+  }
 
-$scope.centerMap = function(pos) {
-    // No position? Let's use default
-    if (pos === undefined || pos.coords===undefined ||
-          pos.coords.latitude === undefined) {
+  $scope.fireMapLoaded = false;
+  var loadFireMapOnce = function() {
+
+    if ($scope.fireMapLoaded) {
+      console.log("Already loaded");
       return;
-    }  
-  $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-}
+    }
 
- 
-  
-setTimeout(function () {
-   navigator.geolocation.getCurrentPosition
-          ($scope.centerMap, null,
-          { maximumAge: 10000, timeout: 10000, enableHighAccuracy: true });  
-});
+    console.log("Loading ...");
 
- 
-  var ref = new Firebase("https://wair.firebaseio.com" + "/map/");
-  $scope.alldata = $firebaseArray(ref);
-  $scope.alldata.$loaded(addMarkers);
-  $MsgService.show("날씨 정보 가져오는중...");
+    $scope.fireMapLoaded = true;
 
+    var latLng = new google.maps.LatLng($scope.coords.latitude, $scope.coords.longitude);
+     
+    var mapOptions = {
+          center: latLng,
+          zoom: 10,
+          mapTypeId: google.maps.MapTypeId.ROADMAP};
+      
+     
+    $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+   
+    if (true) {    
+      setTimeout(function () {
+         navigator.geolocation.getCurrentPosition
+                ($scope.centerMap, null,
+                { maximumAge: 10000, timeout: 10000, enableHighAccuracy: true });  
+      });
+    }
+   
+    var ref = new Firebase("https://wair.firebaseio.com" + "/map/");
+    $scope.alldata = $firebaseArray(ref);
+    $scope.alldata.$loaded(addMarkers);
+    $MsgService.show("날씨 정보 가져오는중...");
+
+  }
+
+  loadFireMapOnce(); // Let's load
 
 });

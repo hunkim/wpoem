@@ -23,47 +23,31 @@ app.run(function($ionicPlatform) {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    $ionicPlatform.ready(function() {
+        setTimeout(function() {
+            if(typeof analytics !== 'undefined') {
+                analytics.startTrackerWithId("UA-73628928-1");
+            } else {
+                console.log("Google Analytics Unavailable");
+            }
+        });
+    });
+
   });
 })
 
 
-app.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
     .state('map', {
-      cache: false,
+     // cache: false,
       url: '/map',
       templateUrl: 'g.html',
       controller: 'MapCtrl'
     });
-/*
-    $stateProvider
-    .state('test', {
-     url: '/test',
-     templateUrl: 't.html',
-     controller: 'tCtrl'
-    });
 
-*/
-/*
- $stateProvider
-    .state('ngmap', {
-      url: '/ngmap',
-      templateUrl: 'ngg.html',
-      controller: 'ngMap2Ctrl'
-    });
-
-
-
-
- $stateProvider
-    .state('x2', {
-     url: '/x2',
-     templateUrl: 'm.html',
-     controller: 'MCtrl'
-    });
-
-*/
   $stateProvider
     .state('index', {
       //cache: false,
@@ -75,4 +59,3 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise("/");
 
 });
-
