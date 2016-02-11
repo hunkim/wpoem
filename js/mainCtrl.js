@@ -77,10 +77,14 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
 
   // based on the slides, update the title
   $scope.slideHasChanged = function(index) {
+    // https://forum.ionicframework.com/t/ios-recieved-memory-warning-then-terminated-due-to-memory-pressure/3399/12
+    // IOS Memory warning?
+    $scope.currentSlide = index;
     // last page? 
     // timout gives me the correct $ionicSlideBoxDelegate.slidesCount()
     // Bug fix! : no correct title from the first map add 
-    $timeout(function () {
+    // FIXME? memory leak here?
+    setTimeout(function () {
       if (index>=$ionicSlideBoxDelegate.slidesCount()-1
         || $scope.locs[index]==undefined ) {
         $scope.title = "지역 설정및 추가";

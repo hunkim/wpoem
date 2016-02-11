@@ -136,11 +136,11 @@ $scope.centerMap = function(pos) {
 
  
   
-setTimeout(function() {
+setTimeout(function () {
    navigator.geolocation.getCurrentPosition
           ($scope.centerMap, null,
           { maximumAge: 10000, timeout: 10000, enableHighAccuracy: true });  
-}); 
+});
 
  
   var ref = new Firebase("https://wair.firebaseio.com" + "/map/");

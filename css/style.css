@@ -7,6 +7,17 @@
     padding: 0px !important;
 }
 
+.no-margin {
+  margin: 0 !important;
+}
+
+.card-margin {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  margin-right: 7px;
+  margin-left: 7px;
+}
+
 .marker-labels {
   width: 160px;
   padding: 10px;  
