@@ -198,30 +198,6 @@ var loadAllForLOC = function(loc, index, func) {
 			     loc_meta.airpred = $firebaseObject(preRef.child(loc.state));
 		    }
 
-        // ----- check prenow and predictionnow
-        var wnow = x.wnowprediction;
-        var w = x.weatherprediction;
-
-        // No prediction, out!
-        if (wnow.length<=0) {
-          return;
-        }
-
-         // No prediction, out!
-        if (w.length<=3) {
-          return;
-        }
-
-        var wnowLast = wnow[wnow.length-1];
-
-        for(var i=1; i<=2 ; i++) {
-          if (w[i].time==wnowLast.time) {
-              // remove w[i]
-              w[i].time = -1; // instead of removing make it invalid
-              w[i-1].time = -1; // invalidate previus one
-          }
-        }
-       
       	// Finally let's get sound
       	// Let's not load TTS for now
       	// loadTTS(loc, loc_meta);

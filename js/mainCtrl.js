@@ -3,11 +3,13 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
 
   // https://blog.nraboy.com/2014/06/using-google-analytics-ionicframework/
   // http://stackoverflow.com/questions/29664948/does-anybody-know-what-does-uncaught-referenceerror-analytics-is-not-defined
+  /*
   if(typeof analytics !== 'undefined') { analytics.trackView("Main Controller"); }
  
   $scope.initEvent = function() {
       if(typeof analytics !== 'undefined') { analytics.trackEvent("Category", "Action", "Label", 25); }
   }
+  */
 
   // timeago setting
   timeAgo.settings.overrideLang = 'kr_KR';
@@ -197,9 +199,10 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
     }
 
     $timeout(function() {
-      var lastSlide = $ionicSlideBoxDelegate.slidesCount();
-      $ionicSlideBoxDelegate.slide(lastSlide);
+      // go to the first slide
+      $ionicSlideBoxDelegate.slide(0);
       $ionicSlideBoxDelegate.update();
+      $scope.slideHasChanged(0);
     });
     // reset the form
     $scope.addform = {};

@@ -1,12 +1,11 @@
 <div class="bar bar-header">
-    <button ng-hide="inConfigPage" class="button button-stable icon ion-ios-gear" ng-click="goConfig();"> 지역추가/삭제</button>
-    <button ng-show="inConfigPage" class="button button-stable icon ion-information-circled" ng-click="showAbout();"> 앱정보</button>
+    <button ng-hide="inConfigPage" class="button button-stable icon ion-ios-gear" ng-click="goConfig();">지역설정</button>
+    <button ng-show="inConfigPage" class="button button-stable icon ion-information-circled" ng-click="showAbout();">앱정보</button>
     <h1 ng-show="isWebView" class="title">{{title}}</h1>
     <h2 ng-hide="isWebView" class="title">{{title}}</h2>
     <!-- <a class="button icon ion-earth" href="#/map">지도보기</a> -->     
-    <a class="button button-stable icon ion-earth" href="#/map">지도보기</a>
+    <a class="button button-stable icon ion-earth" href="#/map">날씨지도</a>
 </div>
-
 
 <ion-content class="has-header">
 <ion-slide-box on-slide-changed="slideHasChanged($index)">    
@@ -25,94 +24,42 @@
         <div class="row">
         
           <div class="col col-50 text-center">
-              <img ng-src="img/s{{loc_meta[$index].data.weather | skyindex}}.png" height="90">
-               <div class="text-center text-overlay-left?">
-                    <h4>{{loc_meta[$index].data.weather | sky}}
-                      {{loc_meta[$index].data.weather.T1H}}&#x2103;</h4>
-                      습도: {{loc_meta[$index].data.weather.REH}}% 
-                </div>
+            <weather-card weather="loc_meta[$index].data.weather">?</weather-card>
           </div> <!-- col-50 -->
 
           <div class="col col-50 text-center">
-             <img ng-src="img/c{{loc_meta[$index].data.air.khaiValue | kindex}}.png" height="70">
-             <div class="text-overlay-right? text-center"> 
-              <H4><small>대기환경 </small>
-                {{loc_meta[$index].data.air.khaiValue|khai}}({{loc_meta[$index].data.air.khaiValue}})</H4>
-                <small>미세{{loc_meta[$index].data.air.pm10Value|pm10}}({{loc_meta[$index].data.air.pm10Value}})
-                <span ng-show="loc_meta[$index].data.air.pm25Grade">
-                초미세{{loc_meta[$index].data.air.pm25Value|pm25}}({{loc_meta[$index].data.air.pm25Value}})</span>
-
-                  <br/><A style="text-decoration:none;" href="#">
-                  <span ng-hide="loc_meta[$index].airpred.today==undefined || loc_meta[$index].airpred.aftertomorrow.PM10!='예보없음'"> 
-                    오후 {{loc_meta[$index].airpred.today.PM10}}</span>
-                  <span> 내일: {{loc_meta[$index].airpred.tomorrow.PM10}}</span>
-                  <span ng-hide="loc_meta[$index].airpred.aftertomorrow.PM10=='예보없음'"> 모레: {{loc_meta[$index].airpred.aftertomorrow.PM10}}</span>
-                  </A>
-                </small>
-              </div>
-        
+            <air-card air="loc_meta[$index].data.air" 
+              airpred="loc_meta[$index].data.airpred"></air-card>
           </div> <!-- col-50 -->
         </div> <!-- row -->  
       </div>   <!-- card -->
 
-      <ion-scroll direction="x" scrollbar-y="false" style="width: 100%; height: 75px;">
-      <div style="width: 800px; height: 75px;" on-touch="mouseoverWideDiv()" on-release="mouseleaveWideDiv()"> 
-        <div class="row">
-           <!-- <div class="col"><small><p>예보</p></small></div> -->
-           <div class="col"><small><small>시간<br/>날씨<br/>&#x2103;</small></small></div>
-           <div ng-hide="$index==0" class="col text-center" 
-                ng-repeat="w in loc_meta[$index].data.wnowprediction">
-           <small>{{w.time}}<br/><img ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
-            <!-- let's use the prediction -->
-            {{loc_meta[$parent.$index].data.weatherprediction[0].T3H|number:0}}</small>
+   
+      <!-- no POS -->   
+      <ion-scroll ng-if="loc_meta[$index].data.weatherprediction[0].POP==undefined" 
+          direction="x" scrollbar-y="false" 
+          style="width: 100%; height: 75px;">
+        <div style="width: 850px; height: 100%;" 
+            on-touch="mouseoverWideDiv()" on-release="mouseleaveWideDiv()"> 
+            <weather-forcast shortpred="loc_meta[$index].data.wnowprediction"
+              longpred="loc_meta[$index].data.weatherprediction">
+            </weather-forcast> 
+        </div>
+      </ion-scroll>       
 
-           </div>
-           <div ng-hide="$index<1 || w.time==-1" class="col text-center" ng-repeat="w in loc_meta[$index].data.weatherprediction">
-           <small>{{w.time}}<br/>
-            <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
-            {{w.T3H|number:0}}</small>
-           </div>
-        </div> <!-- row -->
-      </div>
-      </ion-scroll> <!-- scroll --> 
-     <!-- box -->
-          <!--
-          T1H 기온 0.1 ℃ -50 ℃ 10 
-          RN1 1시간 강수량 범주 (1 mm) -1 mm 8
-          SKY 하늘상태 코드값 -1 4 
-          UUU 동서바람성분 0.1 m/s -100 m/s 12 
-          VVV 남북바람성분 0.1 m/s -100 m/s 12 
-          REH 습도 1 % -1 % 8 
-          PTY 강수형태 코드값 -1 4 
-          LGT 낙뢰 코드값 -1 4 
-          VEC 풍향 0 -1 10 
-          WSD 풍속 -->
-          <!--
-          stationName 측정소 명
-          dataTime  측정일시
-          so2Value  아황산가스 농도
-          coValue 일산화탄소 농도
-          o3Value 오존 농도
-          no2Value  이산화질소 농도
-          pm10Value 미세먼지(PM10) 농도
+      <!-- with POS -->
+      <ion-scroll ng-if="loc_meta[$index].data.weatherprediction[0].POP!=undefined" 
+          direction="x" scrollbar-y="false" 
+          style="width: 100%; height: 95px;">
+        <div style="width: 777px; height: 100%;" 
+            on-touch="mouseoverWideDiv()" on-release="mouseleaveWideDiv()"> 
+            <weather-forcast shortpred="loc_meta[$index].data.wnowprediction"
+              longpred="loc_meta[$index].data.weatherprediction">
+            </weather-forcast> 
+        </div>
+      </ion-scroll>       
 
-          pm25Value 미세먼지(PM2.5) 농도
-          khai  통합대기환경수치
-          khaiGrade 통합대기환경지수
-          so2Grade  아황산가스 지수
-          coGrade 일산화탄소 지수
-          o3Grade 오존 지수
-          no2Grade  이산화질소 지수
-          pm10Grade 미세먼지(PM10) 지수
-          pm25Grade 미세먼지(PM2.5) 지수
-          -->
-          <!--
-          <p>{{item.wnow}}</p>
-          <p>{{item.air}}</p>
-          -->
-
-
-    <!-- 시집 -->
+    <!-- 시집 box-->
     <div class="box">
       <div class="item item-text-wrap">
        <!--  눈이 소리없이 내린다. 눈이 징소리처럼 올라간다. - 이경임의 측제 - -->
@@ -162,7 +109,7 @@
   <div class="list" ng-if="!isIOS || inConfigPage">
       <div class="card"> 
         <label class="item item-input item-select">
-          시도
+          시도선택
            <select ng-model="addform.state" ng-change="getCities();">
               <option ng-repeat="state in stateNames">{{state}}</option>
             </select>
@@ -179,7 +126,7 @@
           </label>
         </div>
 
-        <div class="col  no-padding"> 
+        <div class="col no-padding"> 
           <label class="item item-input item-select">
             동
             <select ng-model="addform.region">
@@ -189,10 +136,16 @@
         </div>
       </div>
 
-      <button ng-click="addCity();" ng-disabled="!addform.region" 
+      <button ng-show="addform.region" ng-click="addCity();" 
               class="button button-block button-positive ion-android-add-circle">
         추가하기
       </button>
+
+      <button ng-show="!addform.region" ng-click="addCity();" disabled 
+              class="button button-block button-positive ion-information-circled">
+        시/도/동을 먼저 선택 하세요.
+      </button>
+
     </div>
   </div>
 
@@ -212,7 +165,17 @@
           <h2>{{item.state}} {{item.city}} {{item.region}}</h2>
           <p>{{loc_meta[$index].data.weather | sky}}
                         {{loc_meta[$index].data.weather.T1H}}&#x2103;
-                        ({{loc_meta[$index].data.weather.REH}}%)</p> 
+            <span ng-show="loc_meta[$index].data.weather.PTY==0">
+              (습도 {{loc_meta[$index].data.weather.REH}}%)
+            </span>
+            <span ng-show="loc_meta[$index].data.weather.PTY==1 || loc_meta[$index].data.weather.PTY==2">
+              (강수량 {{loc_meta[$index].data.weather.RN1}}mm)
+            </span>
+            <span ng-show="loc_meta[$index].data.weather.PTY==3">
+              (눈내림 {{loc_meta[$index].data.weather.RN1}}mm)
+            </span>
+
+          </p> 
           <p>통합대기{{loc_meta[$index].data.air.khaiValue|khai}}
             ({{loc_meta[$index].data.air.khaiValue}})</p>
         

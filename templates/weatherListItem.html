@@ -1,0 +1,11 @@
+
+          <img ng-src="img/s{{weather | skyindex}}_c{{air.khaiValue | kindex}}.png" 
+          ng-click="goSlide($index)">
+
+          <!-- <a href="#" ng-click="goSlide($index);"> -->
+          <h2>{{item.state}} {{item.city}} {{item.region}}</h2>
+          <p>{{loc_meta[$index].data.weather | sky}}
+                        {{loc_meta[$index].data.weather.T1H}}&#x2103;
+                        ({{loc_meta[$index].data.weather.REH}}%)</p> 
+          <p>통합대기{{loc_meta[$index].data.air.khaiValue|khai}}
+            ({{loc_meta[$index].data.air.khaiValue}})</p>

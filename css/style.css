@@ -13,7 +13,7 @@
 
 .card-margin {
   margin-top: 5px;
-  margin-bottom: 0px;
+  margin-bottom: 10px;
   margin-right: 7px;
   margin-left: 7px;
 }
@@ -46,6 +46,11 @@
   position: absolute;
   left: 55%;
   top: 10%;
+}
+
+
+.forcast {
+  background-color:#f0f0f0;
 }
 
 /* https://forum.ionicframework.com/t/ionic-list-item-with-ng-click-and-option-buttons/5078/7 */

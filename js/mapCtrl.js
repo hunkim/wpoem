@@ -3,11 +3,13 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
    
   // https://blog.nraboy.com/2014/06/using-google-analytics-ionicframework/
   // http://stackoverflow.com/questions/29664948/does-anybody-know-what-does-uncaught-referenceerror-analytics-is-not-defined
+  /*
   if(typeof analytics !== 'undefined') { analytics.trackView("Map Controller"); }
  
   $scope.initEvent = function() {
       if(typeof analytics !== 'undefined') { analytics.trackEvent("Category", "Action", "Label", 25); }
   }
+  */
 
   // default coordinate
   $scope.coords = {latitude: 37.52, longitude:126.9948};  
@@ -117,7 +119,7 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
       })(marker, i));
 
       // Finally we are done
-      $MsgService.hide();
+     $scope.loadingDone = true;
     }
   };
 
@@ -133,14 +135,14 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
   }
 
   $scope.fireMapLoaded = false;
+
   var loadFireMapOnce = function() {
+    $scope.loadingDone = false;
 
     if ($scope.fireMapLoaded) {
       console.log("Already loaded");
       return;
     }
-
-    console.log("Loading ...");
 
     $scope.fireMapLoaded = true;
 
@@ -165,7 +167,8 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
     var ref = new Firebase("https://wair.firebaseio.com" + "/map/");
     $scope.alldata = $firebaseArray(ref);
     $scope.alldata.$loaded(addMarkers);
-    $MsgService.show("날씨 정보 가져오는중...");
+    
+    //$MsgService.show("날씨 정보 가져오는중...");
 
   }
 

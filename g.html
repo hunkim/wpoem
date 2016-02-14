@@ -1,6 +1,8 @@
 <div class="bar bar-header">
-    <a class="button button-stable icon ion-thermometer" ng-href="#/" ng-click="goHome();">날씨보기</a>
-    <h1 class="title">날씨 대기환경 지도</h1>
+    <a class="button button-stable icon ion-thermometer" 
+    	ng-href="#/" ng-click="goHome();">날씨보기</a>
+    <h1 ng-show="loadingDone" class="title">날씨 대기환경 지도</h1>
+    <h1 ng-hide="loadingDone" class="title"><ion-spinner></ion-spinner> 날씨정보 읽는중...</h1>
 </div>
 
 <ion-content class="has-header">

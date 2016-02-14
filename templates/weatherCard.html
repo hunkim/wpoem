@@ -1,0 +1,20 @@
+ <div class="text-center text-overlay-left?">
+   <!--
+          T1H 기온 0.1 ℃ -50 ℃ 10 
+          RN1 1시간 강수량 범주 (1 mm) -1 mm 8
+          SKY 하늘상태 코드값 -1 4 
+          UUU 동서바람성분 0.1 m/s -100 m/s 12 
+          VVV 남북바람성분 0.1 m/s -100 m/s 12 
+          REH 습도 1 % -1 % 8 
+          PTY 강수형태 코드값 -1 4 
+          LGT 낙뢰 코드값 -1 4 
+          VEC 풍향 0 -1 10 
+          WSD 풍속 -->
+  <img ng-src="img/s{{weather | skyindex}}.png" height="90">
+  <h4>{{weather | sky}} {{weather.T1H}}&#x2103;</h4>
+  <span ng-show="weather.PTY==1 || weather.PTY==2">
+    강수량: {{weather.RN1}}mm
+  </span> 
+  <span ng-show="weather.PTY==3">눈쌓임: {{weather.RN1}}mm</span>
+  <span ng-show="weather.PTY==0">습도: {{weather.REH}}% </span> 
+</div>

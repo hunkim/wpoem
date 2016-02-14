@@ -24,6 +24,7 @@ app.run(function($ionicPlatform) {
       StatusBar.styleDefault();
     }
 
+/*
     $ionicPlatform.ready(function() {
         setTimeout(function() {
             if(typeof analytics !== 'undefined') {
@@ -33,7 +34,7 @@ app.run(function($ionicPlatform) {
             }
         });
     });
-
+*/
   });
 })
 

@@ -1,0 +1,35 @@
+<div>
+  <div class="row no-padding no-margin">
+    <div class="col no-padding no-margin text-right">
+      <small><small>시간<br/>날씨<br/>
+        <span ng-hide="longpred[0].POP==undefined">비확률<br/></span>
+        &#x2103;</small></small>
+    </div>
+     <!--
+     <div ng-hide="$index==0" class="col text-center" 
+          ng-repeat="w in shortpred">
+     <small>{{w.time}}<br/><img ng-src="img/s{{w | skyindex}}.png" height="22"><br/>
+
+      {{w}}{{w.T1H|number:0}}</small>
+     </div>
+       -->
+
+    <div ng-if="longpred[0].POP==undefined" class="col no-padding no-margin text-center" ng-repeat="w in longpred">
+    <div ng-class="{forcast: w.date%2}">   
+      <small>{{w.time}}</small><br/>
+      <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"/><br/>
+      <small>{{w.T3H|number:0}}</small>
+    </div>
+    </div>
+  
+    <div ng-if="longpred[0].POP!=undefined" class="col  no-padding no-margin text-center" ng-repeat="w in longpred">
+    <div ng-class="{forcast: w.date%2}"> 
+      <small>{{w.time}}</small><br/>
+      <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"/><br/>
+      <small><small>{{w.POP}}%</small></small><br/>
+      <small>{{w.T3H|number:0}}</small>
+    </div>
+    </div>
+  
+  </div> <!-- row -->
+<div>
