@@ -1,5 +1,5 @@
-app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $LocList, 
-  $MsgService, $MapService, $timeout) {
+app.controller('MapCtrl', function($scope, $compile, $filter, $LocList, 
+  $MsgService, $MapService, $timeout, $http) {
    
   // https://blog.nraboy.com/2014/06/using-google-analytics-ionicframework/
   // http://stackoverflow.com/questions/29664948/does-anybody-know-what-does-uncaught-referenceerror-analytics-is-not-defined
@@ -78,7 +78,12 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
 
     
   var addMarkers = function(x) {
-    for (var i=0; i<x.length; i++) {
+    var i=0;
+    for (var i in x) {
+    //    for (var i=0; i<x.length; i++) {  
+      if (!x.hasOwnProperty(i)) continue;
+
+      console.log(x[i]);
       if (x[i].loc == undefined || 
           x[i].weather===undefined ||
           x[i].air === undefined) {
@@ -117,10 +122,10 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
                 marker.open = true;
           }
       })(marker, i));
-
-      // Finally we are done
-     $scope.loadingDone = true;
     }
+
+    // Finally we are done
+    $scope.loadingDone = true;
   };
 
 
@@ -164,12 +169,17 @@ app.controller('MapCtrl', function($scope, $compile, $firebaseArray, $filter, $L
       });
     }
    
-    var ref = new Firebase("https://wair.firebaseio.com" + "/map/");
-    $scope.alldata = $firebaseArray(ref);
-    $scope.alldata.$loaded(addMarkers);
-    
-    //$MsgService.show("날씨 정보 가져오는중...");
-
+    // Use statis json
+    var promise = $http.get("https://wair.firebaseapp.com/map.json")
+        .success(function(response) {
+          $scope.alldata = response;
+          // Let's add markers
+          addMarkers(response);
+        })
+        .error(function(response) {
+          var errorFlag = true;
+          console.log("Error?");
+        });
   }
 
   loadFireMapOnce(); // Let's load

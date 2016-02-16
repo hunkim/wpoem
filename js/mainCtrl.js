@@ -14,6 +14,9 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
   // timeago setting
   timeAgo.settings.overrideLang = 'kr_KR';
 
+  $scope.updatedTime = 0;
+  $scope.updatedTimeAgo = "";
+
   // initially let's set setting
   $scope.title = "지역 설정및 추가";
   $scope.inConfigPage = true;
@@ -40,7 +43,22 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
 
     // turn off all loading message just in case
     $MsgService.hide();  
+
+    $scope.updatedTime = new Date();
+    $scope.updatedTimeAgo = $filter('timeAgo')($scope.updatedTime) 
+
+    // Stop the ion-refresher from spinning
+    $scope.$broadcast('scroll.refreshComplete');
   }
+
+  $timeout(function cycle() {
+      if ($scope.updatedTime == 0) {
+        $scope.updatedTime = new Date();
+      }
+
+      $scope.updatedTimeAgo = $filter('timeAgo')($scope.updatedTime) 
+      $timeout(cycle, 1000*60);
+  });
 
   // ng-model form
   $scope.addform = {
@@ -294,8 +312,8 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
 
   $timeout(function cycle() {
       $scope.loadLocMeta();
-
-      $timeout(cycle, 10000);
+      console.log("reload!")
+      $timeout(cycle, 1000*60*30);
   });
 
 });
