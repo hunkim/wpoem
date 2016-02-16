@@ -162,7 +162,7 @@
           <img ng-src="img/s{{loc_meta[$index].data.weather | skyindex}}_c{{loc_meta[$index].data.air.khaiValue | kindex}}.png" ng-click="goSlide($index)">
 
           <!-- <a href="#" ng-click="goSlide($index);"> -->
-          <h2>{{item.state}} {{item.city}} {{item.region}}</h2>
+          <h2>{{item.city}} {{item.region}}</h2>
           <p>{{loc_meta[$index].data.weather | sky}}
                         {{loc_meta[$index].data.weather.T1H}}&#x2103;
             <span ng-show="loc_meta[$index].data.weather.PTY==0">

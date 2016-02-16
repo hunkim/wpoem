@@ -1,5 +1,5 @@
 app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDelegate, 
-  $firebaseObject, $firebaseArray, timeAgo, $LocList, $MsgService, $ionicPopup) {
+ $firebaseArray, timeAgo, $LocList, $MsgService, $ionicPopup) {
 
   // https://blog.nraboy.com/2014/06/using-google-analytics-ionicframework/
   // http://stackoverflow.com/questions/29664948/does-anybody-know-what-does-uncaught-referenceerror-analytics-is-not-defined
@@ -30,12 +30,17 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
         '경상남도', 
         '제주특별자치도'];
 
-  $scope.locs = $LocList.getLoc(function() {
-    $scope.slideHasChanged(0);
-  });
+  $scope.loadLocMeta = function() {
+    $scope.locs = $LocList.getLoc(function() {
+      $scope.slideHasChanged(0);
+    });
 
-  // Let's save meta data using nx and ny
-  $scope.loc_meta = $LocList.getLocMeta();
+    // Let's save meta data using nx and ny
+    $scope.loc_meta = $LocList.getLocMeta();
+
+    // turn off all loading message just in case
+    $MsgService.hide();  
+  }
 
   // ng-model form
   $scope.addform = {
@@ -102,6 +107,10 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
     // Bug fix! : no correct title from the first map add 
     // FIXME? memory leak here?
     setTimeout(function () {
+      // Need to load a talk
+      $LocList.loadTalk(index);
+
+      // chheck the title
       if (index>=$ionicSlideBoxDelegate.slidesCount()-1
         || $scope.locs[index]==undefined ) {
         $scope.title = "지역 설정및 추가";
@@ -253,35 +262,35 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
     }
   }
 
-// turn off all loading message just in case
-$MsgService.hide();  
 
 
-// ---------------------- About pop up --
-// Triggered on a button click, or some other target
-$scope.showAbout = function() {
-  // An elaborate, custom popup
-  var myPopup = $ionicPopup.show({
-    templateUrl: "about.html",
-    title: '시와 날씨 시험버전 0.2',
-    subTitle: '실시간 대기상태와 날씨를 확인하면서 이와 어울리는 시 한구절 어때요? 날씨에 대해 수다도 나누어요.',
-    buttons: [{ text: '닫기', type: 'button-positive'}]
-  });
+  // ---------------------- About pop up --
+  // Triggered on a button click, or some other target
+  $scope.showAbout = function() {
+    // An elaborate, custom popup
+    var myPopup = $ionicPopup.show({
+      templateUrl: "about.html",
+      title: '시와 날씨 시험버전 0.2',
+      subTitle: '실시간 대기상태와 날씨를 확인하면서 이와 어울리는 시 한구절 어때요? 날씨에 대해 수다도 나누어요.',
+      buttons: [{ text: '닫기', type: 'button-positive'}]
+    });
 
-  myPopup.then(function(res) {
-  });
-};
+    myPopup.then(function(res) {
+    });
+  };
 
 
+  // X scroll
+  // http://stackoverflow.com/questions/35308264/ionic-can-i-disable-the-swipe-action-in-a-certain-area-div-in-ion-slide/35311465#35311465
+  $scope.mouseoverWideDiv = function() {
+      $ionicSlideBoxDelegate.enableSlide(false);
+  };
 
-// X scroll
-// http://stackoverflow.com/questions/35308264/ionic-can-i-disable-the-swipe-action-in-a-certain-area-div-in-ion-slide/35311465#35311465
-$scope.mouseoverWideDiv = function() {
-    $ionicSlideBoxDelegate.enableSlide(false);
-};
+  $scope.mouseleaveWideDiv = function() {
+      $ionicSlideBoxDelegate.enableSlide(true);
+  };
 
-$scope.mouseleaveWideDiv = function() {
-    $ionicSlideBoxDelegate.enableSlide(true);
-};
+  // relaod
+  $scope.loadLocMeta();
 
 });

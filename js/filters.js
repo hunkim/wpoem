@@ -6,7 +6,7 @@
 
 app.filter('sky', function() {
   return function(w, optional1, optional2) {
-  	if (w===undefined) {
+  	if (w===undefined || w===null) {
   		return "로딩중";
   	}
   	// 비
@@ -52,7 +52,7 @@ app.filter('sky', function() {
 
 app.filter('skyindex', function() {
   return function(w, optional1, optional2) {
-  	if (w===undefined) {
+  	if (w===undefined || w==null) {
   		return "0";
   	}
   	// 비
