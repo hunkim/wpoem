@@ -14,7 +14,7 @@
   <ion-slide ng-repeat="item in locs">
     <ion-scroll ng-if="!isIOS || $index==currentSlide" direction="y" scrollbar-x="false"  style="width: 100%; height: 100%;" >
     <ion-refresher
-    pulling-text="당기면 정보를 새로 받아 옵니다. 업데이트: {{updatedTimeAgo}}"
+    pulling-text="당기서 업데이트! (최근 업데이트: {{updatedTimeAgo}})"
     on-refresh="loadLocMeta()">
   </ion-refresher>
 
