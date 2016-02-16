@@ -291,6 +291,11 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
   };
 
   // relaod
-  $scope.loadLocMeta();
+
+  $timeout(function cycle() {
+      $scope.loadLocMeta();
+
+      $timeout(cycle, 10000);
+  });
 
 });

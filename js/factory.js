@@ -225,14 +225,12 @@ app.factory('$LocList', function(StorageService, $firebaseArray, ngAudio, $http,
 	var factory = {}; 
 
   var FBtalkURL = "https://wair.firebaseio.com";
-  var FBWeatherURL = "https://json.wpoem.com/";
+  var FBWeatherURL = "https://wair.firebaseapp.com/";
 
     
 	// Loc and meta data
 	factory.locs = [];
 	factory.loc_meta = [];
-
-
 
 	factory.getLoc = function(func) {
 		loadAll(func);
