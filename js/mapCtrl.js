@@ -52,21 +52,13 @@ app.controller('MapCtrl', function($scope, $compile, $filter, $LocList,
       // mapLoc.loc.city ="";
     }
 
-    if (mapLoc.$id === undefined) {
-       $MsgService.warning('이 지역을 추가할수 없습니다. ($id 없슴)', loc.city + " " + loc.region);
-       return;
-    }
-
-    var nxny = mapLoc.$id.split("-");
-    if (nxny.length!=2) {
-       $MsgService.warning('이 지역을 추가할수 없습니다. 잘못된 $id:' + mapLoc.$id, loc.city + " " + loc.region);
-       return; 
-    }
+    
 
     var loc = {state: mapLoc.loc.state, 
               city: mapLoc.loc.city, 
               region: mapLoc.loc.region, 
-              nx: nxny[0], ny: nxny[1]};
+              nx: mapLoc.loc.nx, 
+              ny: mapLoc.loc.ny};
     
     // add in the factory
     if ($LocList.add(loc)==false) {
@@ -78,12 +70,10 @@ app.controller('MapCtrl', function($scope, $compile, $filter, $LocList,
 
     
   var addMarkers = function(x) {
-    var i=0;
-    for (var i in x) {
-    //    for (var i=0; i<x.length; i++) {  
-      if (!x.hasOwnProperty(i)) continue;
-
-      console.log(x[i]);
+    //var i=0;
+    //for (var i in x) {
+    //if (!x.hasOwnProperty(i)) continue;
+    for (var i=0; i<x.length; i++) {  
       if (x[i].loc == undefined || 
           x[i].weather===undefined ||
           x[i].air === undefined) {
@@ -104,7 +94,7 @@ app.controller('MapCtrl', function($scope, $compile, $filter, $LocList,
             map: $scope.map,
             icon: {url: iconUrl},
             draggable:false,
-            title: "test"
+            title: "t" + i
       });
         
       // Allow each marker to have an info window    

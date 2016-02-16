@@ -124,7 +124,7 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
     // timout gives me the correct $ionicSlideBoxDelegate.slidesCount()
     // Bug fix! : no correct title from the first map add 
     // FIXME? memory leak here?
-    setTimeout(function () {
+    $timeout(function () {
       // Need to load a talk
       $LocList.loadTalk(index);
 
@@ -155,10 +155,12 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
     // with automatic $apply() so that you don’t have to call $apply() manually.
 
     // update, since there might some additions
-    $ionicSlideBoxDelegate.update();
+    $timeout(function() {
+      $ionicSlideBoxDelegate.update();
+      $ionicSlideBoxDelegate.slide(0);
+      $scope.slideHasChanged(0);
+    });
 
-    $ionicSlideBoxDelegate.slide(0);
-    $scope.slideHasChanged(0);
   });
 
 
@@ -312,7 +314,6 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
 
   $timeout(function cycle() {
       $scope.loadLocMeta();
-      console.log("reload!")
       $timeout(cycle, 1000*60*30);
   });
 
