@@ -14,7 +14,7 @@
   <ion-slide ng-repeat="item in locs">
     <ion-scroll ng-if="!isIOS || $index==currentSlide" direction="y" scrollbar-x="false"  style="width: 100%; height: 100%;" >
     <ion-refresher
-    pulling-text="더 당기면 정보를 새로 받아 옵니다. 업데이트: {{updatedTimeAgo}}"
+    pulling-text="당기면 정보를 새로 받아 옵니다. 업데이트: {{updatedTimeAgo}}"
     on-refresh="loadLocMeta()">
   </ion-refresher>
 
@@ -72,6 +72,7 @@
     <!-- 시집 box-->
     <div class="box">
       <div class="item item-text-wrap">
+      <a class="icon ion-ios-compose" href="#/poem"></a>
        <!--  눈이 소리없이 내린다. 눈이 징소리처럼 올라간다. - 이경임의 측제 - -->
       {{loc_meta[$index].data.weather.poem}} 
       </div>
@@ -91,7 +92,7 @@
         <ion-item class="item-input-inset">
           <label class="item-input-wrapper">
             <input ng-model="talk.msg" ng-maxlength="80" type="text" 
-              placeholder="오늘 {{item.region}} 날씨/공기에 대해..."/>
+              placeholder="{{item.region}} 날씨/공기에 대해..."/>
           </label>
           <button class="button button-positive button-small">
             한마디!

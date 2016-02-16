@@ -43,10 +43,18 @@ app.run(function($ionicPlatform) {
 
   $stateProvider
     .state('map', {
-     // cache: false,
+      cache: false,
       url: '/map',
       templateUrl: 'g.html',
       controller: 'MapCtrl'
+    });
+
+  $stateProvider
+    .state('poem', {
+      //cache: false,
+      url: '/poem',
+      templateUrl: 'poem.html',
+      controller: 'PoemCtrl'
     });
 
   $stateProvider
