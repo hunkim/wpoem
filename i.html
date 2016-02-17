@@ -14,7 +14,7 @@
   <ion-slide ng-repeat="item in locs">
     <ion-scroll ng-if="!isIOS || $index==currentSlide" direction="y" scrollbar-x="false"  style="width: 100%; height: 100%;" >
     <ion-refresher
-    pulling-text="당기서 업데이트! (최근 업데이트: {{updatedTimeAgo}})"
+    pulling-text="당기서 업데이트. (최근 업데이트: {{updatedTimeAgo}})"
     on-refresh="loadLocMeta()">
   </ion-refresher>
 
@@ -109,6 +109,16 @@
       <ion-item ng-show="loc_meta[$index].talks.length==10">
         <i class="icon ion-information-circled button button-clear button-positive" disabed> 최신 10개의 메시지만 보여 줍니다. </i>
       </ion-item>
+      <div ng-if="loc_meta[$index].talks.length<5">
+        <ion-item>&nbsp;</ion-item>
+        <ion-item>&nbsp;</ion-item>
+        <ion-item>&nbsp;</ion-item>
+        <ion-item>&nbsp;</ion-item>
+        <ion-item>&nbsp;</ion-item>
+        <ion-item>&nbsp;</ion-item>
+        <ion-item>&nbsp;</ion-item>
+      </div>
+
     </ion-list>
    </form>
   <ion-scroll>

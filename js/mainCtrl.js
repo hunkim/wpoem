@@ -149,6 +149,7 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
   // http://stackoverflow.com/questions/27853431/ion-list-does-not-refresh-after-state-go-is-called
   $scope.$on('$ionicView.beforeEnter', function () {
     // update slides
+    $scope.loadLocMeta(); // update weather 
 
     // http://www.sitepoint.com/understanding-angulars-apply-digest/
     // Note: By the way, you should use $timeout service whenever possible which is setTimeout()
@@ -162,6 +163,13 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
     });
 
   });
+
+  // https://blog.nraboy.com/2014/09/handling-apache-cordova-events-ionicframework/
+  // Update when this comes back to foreground
+  document.addEventListener("resume", function() {
+    console.log("The application is resuming from the background");
+    $scope.loadLocMeta();
+  }, false);
 
 
   $scope.remove = function($index, $loc) {
@@ -314,7 +322,7 @@ app.controller('MainCtrl', function($scope, $timeout, $filter, $ionicSlideBoxDel
 
   $timeout(function cycle() {
       $scope.loadLocMeta();
-      $timeout(cycle, 1000*60*30);
+      $timeout(cycle, 1000*60*10);
   });
 
 });

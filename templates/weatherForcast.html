@@ -14,22 +14,14 @@
      </div>
        -->
 
-    <div ng-if="longpred[0].POP==undefined" class="col no-padding no-margin text-center" ng-repeat="w in longpred">
-    <div ng-class="{forcast: w.date%2}">   
-      <small>{{w.time}}</small><br/>
-      <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"/><br/>
-      <small>{{w.T3H|number:0}}</small>
-    </div>
-    </div>
-  
-    <div ng-if="longpred[0].POP!=undefined" class="col  no-padding no-margin text-center" ng-repeat="w in longpred">
+  <div class="col  no-padding no-margin text-center" ng-repeat="w in longpred">
     <div ng-class="{forcast: w.date%2}"> 
       <small>{{w.time}}</small><br/>
       <img class="text-right"  ng-src="img/s{{w | skyindex}}.png" height="22"/><br/>
-      <small><small>{{w.POP}}%</small></small><br/>
+      <span ng-hide="longpred[0].POP==undefined"><small><small>{{w.POP}}%</small></small><br/></span>
       <small>{{w.T3H|number:0}}</small>
     </div>
-    </div>
+  </div>
   
   </div> <!-- row -->
 <div>
